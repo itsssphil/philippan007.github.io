@@ -1,0 +1,2620 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Education - Philip Pan</title>
+    <!-- Version: 2024-01-15-v23 - Fixed const projects variable issue -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ffffff;
+            --secondary-color: #cccccc;
+            --accent-color: #ffffff;
+            --text-dark: #ffffff;
+            --text-light: #cccccc;
+            --bg-dark: #000000;
+            --bg-darker: #000000;
+            --bg-light: #000000;
+            --bg-white: #000000;
+            --border-color: rgba(255, 255, 255, 0.2);
+            --code-green: #ffffff;
+            --code-blue: #ffffff;
+            --code-purple: #ffffff;
+            --code-yellow: #ffffff;
+            --shadow-soft: 0 2px 10px rgba(255, 255, 255, 0.1);
+            --shadow-hover: 0 4px 20px rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--bg-darker);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Dynamic Background */
+        .code-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -30;
+            overflow: hidden;
+        }
+
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -30;
+            overflow: hidden;
+        }
+
+        /* Navigation - Exact copy from index.html */
+        .navbar {
+            background: #000000;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #000000;
+            padding: 1rem 0;
+            z-index: 1000;
+        }
+
+        .navbar-nav {
+            gap: 0.5rem;
+        }
+
+        .navbar-nav .nav-item {
+            position: relative;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color) !important;
+            font-size: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--text-light) !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 1rem !important;
+            display: block;
+            text-decoration: none;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary-color) !important;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 5px;
+            left: 50%;
+            background: var(--primary-color);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 80%;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            padding: 150px 0 100px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: transparent;
+            z-index: 10;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: var(--text-dark);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-light);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            padding: 2rem 0;
+            background: rgba(0, 0, 0, 0.8);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #000000;
+            margin-top: 0;
+        }
+
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-dark);
+            text-decoration: none;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .filter-tab:hover::before {
+            left: 100%;
+        }
+
+        .filter-tab:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .filter-tab.active {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .filter-tab.active::before {
+            display: none;
+        }
+
+
+        .no-results {
+            text-align: center;
+            padding: 3rem 0;
+            color: var(--text-light);
+        }
+
+        .no-results i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Projects Grid */
+        .projects-section {
+            padding: 0 0 3rem 0;
+            background: transparent;
+            min-height: 60vh;
+            margin-top: 0;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 0;
+            margin-bottom: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(15px);
+            overflow: hidden;
+            position: relative;
+            height: 420px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 123, 255, 0.1), rgba(0, 86, 179, 0.05));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 123, 255, 0.15);
+            border-color: rgba(0, 123, 255, 0.3);
+        }
+
+        .project-image-container {
+            position: relative;
+            overflow: hidden;
+            height: 220px;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .project-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(1.05);
+        }
+
+        .project-category-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 123, 255, 0.9);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            z-index: 2;
+        }
+
+        .project-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 2;
+            justify-content: space-between;
+            min-height: 0;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            color: var(--text-dark);
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        .project-description {
+            color: #888888;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+            font-size: 0.9rem;
+            flex: 0 0 auto;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            max-height: 1.4em;
+        }
+
+
+        .project-actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 1rem;
+            flex-shrink: 0;
+        }
+
+        .project-btn {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            border: none;
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .project-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
+            color: white;
+        }
+
+
+        .project-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .project-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* Grid Layout */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, 350px);
+            gap: 2rem;
+            margin-top: 0;
+            padding-top: 2rem;
+            justify-content: center;
+        }
+
+        /* Loading Animation */
+        .project-card.loading {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .project-card.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Ensure consistent card display during filtering */
+        .projects-grid .project-card {
+            display: block;
+        }
+
+        /* Hidden state for filtering */
+        .project-card.hidden {
+            display: none !important;
+        }
+
+        /* Modal Styles */
+        .modal-content {
+            background: rgba(0, 0, 0, 0.98);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-dark);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem 2rem 1rem;
+            position: relative;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        .btn-close {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            opacity: 1;
+            transition: all 0.3s ease;
+        }
+
+        .btn-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 0 2rem 2rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .project-hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+            align-items: start;
+        }
+
+        .project-hero-image {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-hero-image img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .project-hero-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .project-hero-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+
+        .project-description-large {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--text-light);
+        }
+
+
+        .project-actions-large {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn-primary-large {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            border: none;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-primary-large:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 123, 255, 0.3);
+            color: white;
+        }
+
+        .btn-secondary-large {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-light);
+            padding: 0.75rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-secondary-large:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--text-light);
+            transform: translateY(-2px);
+        }
+
+        .modal-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .modal-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title i {
+            font-size: 1.1rem;
+        }
+
+        .section-content {
+            margin-bottom: 0;
+            line-height: 1.8;
+            color: var(--text-light);
+        }
+
+        .section-content ul {
+            padding-left: 1.5rem;
+            margin: 0;
+        }
+
+        .section-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tech-item {
+            background: rgba(0, 123, 255, 0.1);
+            color: var(--accent-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: 1px solid rgba(0, 123, 255, 0.2);
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .result-item {
+            background: rgba(0, 123, 255, 0.05);
+            border: 1px solid rgba(0, 123, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .result-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .result-label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Modal Responsive */
+        @media (max-width: 768px) {
+            .project-hero {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .modal-sections {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .modal-header {
+                padding: 1.5rem 1.5rem 1rem;
+            }
+            
+            .modal-body {
+                padding: 0 1.5rem 1.5rem;
+            }
+            
+            .project-actions-large {
+                flex-direction: column;
+            }
+            
+            .btn-primary-large,
+            .btn-secondary-large {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Enhanced Responsive Design */
+        @media (max-width: 1400px) {
+            .projects-grid {
+                grid-template-columns: repeat(auto-fit, 380px);
+                gap: 2rem;
+                margin-top: 0;
+                padding-top: 1.5rem;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .projects-grid {
+                grid-template-columns: repeat(auto-fit, 350px);
+                gap: 1.5rem;
+                margin-top: 0;
+                padding-top: 1.5rem;
+                justify-content: center;
+            }
+            
+            .hero-title {
+                font-size: 3.5rem;
+            }
+            
+            .modal-sections {
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .hero-section {
+                padding: 120px 0 80px;
+            }
+            
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.3rem;
+            }
+            
+            .filter-section {
+                padding: 1.5rem 0;
+            }
+            
+            .projects-grid {
+                grid-template-columns: repeat(auto-fit, 320px);
+                gap: 1.5rem;
+                margin-top: 0;
+                padding-top: 1.5rem;
+                justify-content: center;
+            }
+            
+            .project-hero {
+                gap: 1.5rem;
+            }
+            
+            .modal-sections {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 100px 0 60px;
+                min-height: 80vh;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+                margin-bottom: 2.5rem;
+            }
+            
+            .filter-section {
+                padding: 1rem 0;
+                position: sticky;
+                top: 70px;
+            }
+            
+            .filter-tabs {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.75rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .filter-tab {
+                width: 100%;
+                max-width: 250px;
+                text-align: center;
+                padding: 0.6rem 1.2rem;
+            }
+            
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                margin-top: 0;
+                padding: 1.5rem 1rem 0 1rem;
+                max-width: 400px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .project-card {
+                margin-bottom: 1.5rem;
+                height: 400px;
+            }
+            
+            .project-actions {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .project-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .project-stats {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: flex-start;
+            }
+            
+            .project-hero {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .project-hero-image img {
+                height: 250px;
+            }
+            
+            .modal-header {
+                padding: 1.5rem 1.5rem 1rem;
+            }
+            
+            .modal-body {
+                padding: 0 1.5rem 1.5rem;
+            }
+            
+            .project-actions-large {
+                flex-direction: column;
+            }
+            
+            .btn-primary-large,
+            .btn-secondary-large {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-section {
+                padding: 80px 0 40px;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+                line-height: 1.2;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .filter-section {
+                padding: 0.75rem 0;
+            }
+            
+            .filter-tab {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+            
+            
+            .projects-grid {
+                gap: 1rem;
+                margin-top: 0;
+                padding: 1rem 0.5rem 0 0.5rem;
+                max-width: 350px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .project-content {
+                padding: 1rem;
+            }
+            
+            .project-title {
+                font-size: 1.3rem;
+                line-height: 1.2;
+            }
+            
+            .project-description {
+                font-size: 0.9rem;
+                line-height: 1.6;
+            }
+            
+            
+            
+            .project-image-container {
+                height: 180px;
+            }
+            
+            .project-hero-image img {
+                height: 200px;
+            }
+            
+            .modal-header {
+                padding: 1rem 1rem 0.75rem;
+            }
+            
+            .modal-title {
+                font-size: 1.5rem;
+            }
+            
+            .modal-body {
+                padding: 0 1rem 1rem;
+            }
+            
+            .modal-section {
+                padding: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.1rem;
+            }
+            
+            .results-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+            
+            .result-item {
+                padding: 0.75rem;
+            }
+            
+            .result-value {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .project-content {
+                padding: 0.75rem;
+            }
+            
+            .project-title {
+                font-size: 1.2rem;
+            }
+            
+            .project-description {
+                font-size: 0.85rem;
+                line-height: 1.6;
+            }
+            
+            .project-tag {
+                font-size: 0.65rem;
+                padding: 0.15rem 0.5rem;
+            }
+            
+            .project-image-container {
+                height: 160px;
+            }
+            
+            .project-card {
+                height: 380px;
+            }
+            
+            .project-hero-image img {
+                height: 180px;
+            }
+            
+            .modal-title {
+                font-size: 1.3rem;
+            }
+            
+            .modal-section {
+                padding: 0.75rem;
+            }
+            
+            .section-title {
+                font-size: 1rem;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+        }
+
+        /* Enhanced Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .fade-in-left {
+            opacity: 0;
+            transform: translateX(-30px);
+            animation: fadeInLeft 0.6s ease forwards;
+        }
+
+        .fade-in-right {
+            opacity: 0;
+            transform: translateX(30px);
+            animation: fadeInRight 0.6s ease forwards;
+        }
+
+        .fade-in-scale {
+            opacity: 0;
+            transform: scale(0.9);
+            animation: fadeInScale 0.6s ease forwards;
+        }
+
+        .slide-in-up {
+            opacity: 0;
+            transform: translateY(50px);
+            animation: slideInUp 0.8s ease forwards;
+        }
+
+        .bounce-in {
+            opacity: 0;
+            transform: scale(0.3);
+            animation: bounceIn 0.8s ease forwards;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .glow {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInScale {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 20px rgba(0, 123, 255, 0.3);
+            }
+            to {
+                box-shadow: 0 0 30px rgba(0, 123, 255, 0.6);
+            }
+        }
+
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        .stagger-4 { animation-delay: 0.4s; }
+        .stagger-5 { animation-delay: 0.5s; }
+        .stagger-6 { animation-delay: 0.6s; }
+
+        /* Hover Animations */
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .hover-glow {
+            transition: box-shadow 0.3s ease;
+        }
+
+        .hover-glow:hover {
+            box-shadow: 0 0 20px rgba(0, 123, 255, 0.4);
+        }
+
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+
+        .hover-rotate {
+            transition: transform 0.3s ease;
+        }
+
+        .hover-rotate:hover {
+            transform: rotate(5deg);
+        }
+
+        /* Loading States */
+        .loading-shimmer {
+            background: linear-gradient(90deg, 
+                rgba(255, 255, 255, 0.1) 25%, 
+                rgba(255, 255, 255, 0.2) 50%, 
+                rgba(255, 255, 255, 0.1) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        /* Scroll Animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s ease;
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Interactive Elements */
+        .interactive {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .interactive:active {
+            transform: scale(0.95);
+        }
+
+        .ripple {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ripple::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .ripple:active::before {
+            width: 300px;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Dynamic Background -->
+    <div class="code-background" id="codeBackground"></div>
+    <div class="matrix-rain" id="matrixRain"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+<div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html" id="nav-home-tab" data-en="HOME" data-zh="首页" data-zh-tw="首頁">首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="ai-education.html" data-en="AI EDUCATION" data-zh="AI教育" data-zh-tw="AI教育">AI教育</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <button class="btn btn-outline-light btn-sm ms-2 dropdown-toggle" id="language-toggle" data-bs-toggle="dropdown" style="border: 1px solid var(--primary-color); color: var(--primary-color); background: transparent; padding: 0.5rem 1rem; border-radius: 4px; transition: all 0.3s ease;">
+                            <i class="fas fa-globe me-1"></i><span id="lang-text">简</span>
+                        </button>
+                        <ul class="dropdown-menu" style="background: var(--bg-light); border: 1px solid var(--border-color);">
+                            <li><a class="dropdown-item" href="#" data-lang="zh" style="color: var(--text-dark);">简体中文</a></li>
+                            <li><a class="dropdown-item" href="#" data-lang="zh-tw" style="color: var(--text-dark);">繁體中文</a></li>
+                            <li><a class="dropdown-item" href="#" data-lang="en" style="color: var(--text-dark);">English</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+</div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h1 class="hero-title fade-in bounce-in" data-en="AI Education Portfolio" data-zh="AI教育作品集" data-zh-tw="AI教育作品集">AI教育作品集</h1>
+                    <p class="hero-subtitle fade-in slide-in-up stagger-1" data-en="Exploring AI-driven Educational Innovation Solutions" data-zh="探索AI驱动的教育创新解决方案" data-zh-tw="探索AI驅動的教育創新解決方案">探索AI驱动的教育创新解决方案</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="filter-section">
+        <div class="container">
+            <div class="filter-tabs">
+                <a href="#" class="filter-tab active interactive ripple hover-lift" data-filter="all" data-en="All Projects" data-zh="全部项目" data-zh-tw="全部項目">
+                    <i class="fas fa-th-large me-2"></i>
+                    <span data-en="All Projects" data-zh="全部项目" data-zh-tw="全部項目">全部项目</span>
+                </a>
+                <a href="#" class="filter-tab interactive ripple hover-lift" data-filter="gamification" data-en="Gamified Learning" data-zh="游戏化学习" data-zh-tw="遊戲化學習">
+                    <i class="fas fa-gamepad me-2"></i>
+                    <span data-en="Gamified Learning" data-zh="游戏化学习" data-zh-tw="遊戲化學習">游戏化学习</span>
+                </a>
+                <a href="#" class="filter-tab interactive ripple hover-lift" data-filter="traditional" data-en="Traditional Projects" data-zh="传统项目" data-zh-tw="傳統項目">
+                    <i class="fas fa-book me-2"></i>
+                    <span data-en="Traditional Projects" data-zh="传统项目" data-zh-tw="傳統項目">传统项目</span>
+                </a>
+                <a href="#" class="filter-tab interactive ripple hover-lift" data-filter="ai-collaboration" data-en="AI Collaboration" data-zh="AI协作" data-zh-tw="AI協作">
+                    <i class="fas fa-robot me-2"></i>
+                    <span data-en="AI Collaboration" data-zh="AI协作" data-zh-tw="AI協作">AI协作</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects-section">
+        <div class="container">
+            <div class="projects-grid" id="projectsGrid">
+                <!-- Projects will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Hidden Admin Trigger (右下角隐藏区域) -->
+    <div id="adminTrigger" style="position: fixed; bottom: 20px; right: 20px; width: 20px; height: 20px; background: transparent; cursor: pointer; z-index: 1000;" title="连续点击5次进入管理模式"></div>
+
+    <!-- Admin Management Panel (隐藏的管理面板) -->
+    <div id="adminPanel" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 9999; overflow-y: auto;">
+        <div style="padding: 20px; max-width: 1200px; margin: 0 auto;">
+            <!-- 管理面板头部 -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid var(--primary-color);">
+                <h2 style="color: var(--primary-color); margin: 0;">🔧 项目管理系统</h2>
+                <button onclick="exitAdminMode()" style="background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">退出编辑</button>
+            </div>
+
+            <!-- 项目管理区域 -->
+            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 30px;">
+                <!-- 左侧：项目列表 -->
+                <div>
+                    <h3 style="color: white; margin-bottom: 20px;">项目列表</h3>
+                    <div id="projectList" style="background: rgba(255, 255, 255, 0.05); border-radius: 10px; padding: 20px; margin-bottom: 20px;">
+                        <!-- 项目列表将在这里动态生成 -->
+                    </div>
+                    <button onclick="addNewProject()" style="background: var(--primary-color); color: black; border: none; padding: 12px 24px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold;">+ 添加新项目</button>
+                </div>
+
+                <!-- 右侧：项目编辑器 -->
+                <div>
+                    <h3 style="color: white; margin-bottom: 20px;">项目编辑器</h3>
+                    <div id="projectEditor" style="background: rgba(255, 255, 255, 0.05); border-radius: 10px; padding: 20px;">
+                        <p style="color: #888; text-align: center; padding: 40px;">请选择一个项目进行编辑</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 数据管理区域 -->
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                <h3 style="color: white; margin-bottom: 20px;">数据管理</h3>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <button onclick="exportData()" style="background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">📤 导出数据</button>
+                    <button onclick="importData()" style="background: #17a2b8; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">📥 导入数据</button>
+                    <button onclick="resetToDefault()" style="background: #ffc107; color: black; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">🔄 恢复默认</button>
+                    <button onclick="checkLocalStorage()" style="background: #6f42c1; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">🔍 检查存储</button>
+                    <button onclick="syncFromLocalStorage()" style="background: #e83e8c; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">🔄 强制同步</button>
+                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="handleFileImport(event)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Detail Modal -->
+    <div class="modal fade" id="projectModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="modalTitle">项目详情</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <!-- Project details will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Language switching
+        let currentLang = 'zh';
+        
+        // Admin Management System
+        let adminClickCount = 0;
+        let adminClickTimeout;
+        let currentEditingProject = null;
+
+        // 隐藏激活区域点击事件
+        function initAdminSystem() {
+            const adminTrigger = document.getElementById('adminTrigger');
+            if (adminTrigger) {
+                adminTrigger.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    adminClickCount++;
+                    clearTimeout(adminClickTimeout);
+                    
+                    if (adminClickCount >= 5) {
+                        showAdminPanel();
+                        adminClickCount = 0;
+                    } else {
+                        adminClickTimeout = setTimeout(() => {
+                            adminClickCount = 0;
+                        }, 2000);
+                    }
+                });
+            }
+        }
+
+        // 显示管理面板
+        function showAdminPanel() {
+            document.getElementById('adminPanel').style.display = 'block';
+            loadProjectList();
+        }
+
+        // 退出管理模式
+        function exitAdminMode() {
+            document.getElementById('adminPanel').style.display = 'none';
+            adminClickCount = 0;
+            currentEditingProject = null;
+        }
+
+        // 加载项目列表
+        function loadProjectList() {
+            const projectList = document.getElementById('projectList');
+            projectList.innerHTML = '';
+            
+            projects.forEach((project, index) => {
+                const projectItem = document.createElement('div');
+                projectItem.style.cssText = `
+                    background: rgba(255, 255, 255, 0.1);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    border-radius: 8px;
+                    padding: 15px;
+                    margin-bottom: 10px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                `;
+                
+                projectItem.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h4 style="color: white; margin: 0 0 5px 0; font-size: 1rem;">${project.title[currentLang] || project.title['zh']}</h4>
+                            <p style="color: #888; margin: 0; font-size: 0.9rem;">${project.category}</p>
+                        </div>
+                        <div>
+                            <button onclick="editProject(${project.id})" style="background: var(--primary-color); color: black; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-right: 5px; font-size: 0.8rem;">编辑</button>
+                            <button onclick="deleteProject(${project.id})" style="background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 0.8rem;">删除</button>
+                        </div>
+                    </div>
+                `;
+                
+                projectItem.addEventListener('mouseenter', function() {
+                    this.style.background = 'rgba(255, 255, 255, 0.15)';
+                });
+                
+                projectItem.addEventListener('mouseleave', function() {
+                    this.style.background = 'rgba(255, 255, 255, 0.1)';
+                });
+                
+                projectList.appendChild(projectItem);
+            });
+        }
+
+        // 编辑项目
+        function editProject(projectId) {
+            const project = projects.find(p => p.id === projectId);
+            if (!project) return;
+            
+            currentEditingProject = project;
+            showProjectEditor(project);
+        }
+
+        // 显示项目编辑器
+        function showProjectEditor(project) {
+            const editor = document.getElementById('projectEditor');
+            editor.innerHTML = `
+                <div style="margin-bottom: 20px;">
+                    <label style="color: white; display: block; margin-bottom: 5px;">项目ID:</label>
+                    <input type="number" id="projectId" value="${project.id}" style="width: 100%; padding: 8px; border-radius: 5px; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid var(--primary-color);">
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="color: white; display: block; margin-bottom: 5px;">项目分类:</label>
+                    <select id="projectCategory" style="width: 100%; padding: 8px; border-radius: 5px; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid var(--primary-color);">
+                        <option value="gamification" ${project.category === 'gamification' ? 'selected' : ''}>游戏化学习</option>
+                        <option value="traditional" ${project.category === 'traditional' ? 'selected' : ''}>传统项目</option>
+                        <option value="ai-collaboration" ${project.category === 'ai-collaboration' ? 'selected' : ''}>AI协作</option>
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="color: white; display: block; margin-bottom: 5px;">项目图片:</label>
+                    <input type="text" id="projectImage" value="${project.image}" style="width: 100%; padding: 8px; border-radius: 5px; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid var(--primary-color);">
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 15px;">多语言标题</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                        <div>
+                            <label style="color: white; display: block; margin-bottom: 5px;">简体中文:</label>
+                            <input type="text" id="titleZh" value="${project.title.zh}" style="width: 100%; padding: 8px; border-radius: 5px; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid var(--primary-color);">
+                        </div>
+                        <div>
+                            <label style="color: white; display: block; margin-bottom: 5px;">繁体中文:</label>
+                            <input type="text" id="titleZhTw" value="${project.title['zh-tw']}" style="width: 100%; padding: 8px; border-radius: 5px; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid var(--primary-color);">
+                        </div>
+                        <div>
+                            <label style="color: white; display: block; margin-bottom: 5px;">English:</label>
+                            <input type="text" id="titleEn" value="${project.title.en}" style="width: 100%; padding: 8px; border-radius: 5px; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid var(--primary-color);">
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 15px;">多语言描述</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                        <div>
+                            <label style="color: white; display: block; margin-bottom: 5px;">简体中文:</label>
+                            <textarea id="descZh" rows="3" style="width: 100%; padding: 8px; border-radius: 5px; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid var(--primary-color); resize: vertical;">${project.description.zh}</textarea>
+                        </div>
+                        <div>
+                            <label style="color: white; display: block; margin-bottom: 5px;">繁体中文:</label>
+                            <textarea id="descZhTw" rows="3" style="width: 100%; padding: 8px; border-radius: 5px; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid var(--primary-color); resize: vertical;">${project.description['zh-tw']}</textarea>
+                        </div>
+                        <div>
+                            <label style="color: white; display: block; margin-bottom: 5px;">English:</label>
+                            <textarea id="descEn" rows="3" style="width: 100%; padding: 8px; border-radius: 5px; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid var(--primary-color); resize: vertical;">${project.description.en}</textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 15px; margin-top: 30px;">
+                    <button onclick="saveProject()" style="background: #28a745; color: white; border: none; padding: 12px 24px; border-radius: 5px; cursor: pointer; font-weight: bold;">💾 保存项目</button>
+                    <button onclick="cancelEdit()" style="background: #6c757d; color: white; border: none; padding: 12px 24px; border-radius: 5px; cursor: pointer;">❌ 取消编辑</button>
+                </div>
+            `;
+        }
+
+        // 保存项目
+        function saveProject() {
+            if (!currentEditingProject) return;
+            
+            const projectId = parseInt(document.getElementById('projectId').value);
+            const category = document.getElementById('projectCategory').value;
+            const image = document.getElementById('projectImage').value;
+            
+            // 更新项目信息
+            currentEditingProject.id = projectId;
+            currentEditingProject.category = category;
+            currentEditingProject.image = image;
+            
+            currentEditingProject.title = {
+                zh: document.getElementById('titleZh').value,
+                'zh-tw': document.getElementById('titleZhTw').value,
+                en: document.getElementById('titleEn').value
+            };
+            
+            currentEditingProject.description = {
+                zh: document.getElementById('descZh').value,
+                'zh-tw': document.getElementById('descZhTw').value,
+                en: document.getElementById('descEn').value
+            };
+            
+            // 保存到localStorage
+            localStorage.setItem('projectsData', JSON.stringify(projects));
+            console.log('项目保存后，localStorage中有', projects.length, '个项目');
+            
+            // 重新加载项目列表和页面
+            loadProjectList();
+            initProjects();
+            
+            alert('项目保存成功！');
+        }
+
+        // 取消编辑
+        function cancelEdit() {
+            currentEditingProject = null;
+            document.getElementById('projectEditor').innerHTML = '<p style="color: #888; text-align: center; padding: 40px;">请选择一个项目进行编辑</p>';
+        }
+
+        // 添加新项目
+        function addNewProject() {
+            const newId = Math.max(...projects.map(p => p.id)) + 1;
+            const newProject = {
+                id: newId,
+                title: { zh: '新项目', 'zh-tw': '新項目', en: 'New Project' },
+                description: { zh: '项目描述', 'zh-tw': '項目描述', en: 'Project Description' },
+                category: 'gamification',
+                image: './images/portfolio/1.jpg',
+                details: {
+                    background: { zh: '项目背景', 'zh-tw': '項目背景', en: 'Project Background' },
+                    concept: { zh: '设计理念', 'zh-tw': '設計理念', en: 'Design Concept' },
+                    aiProcess: { zh: 'AI协作过程', 'zh-tw': 'AI協作過程', en: 'AI Collaboration Process' },
+                    challenges: { zh: '遇到的问题', 'zh-tw': '遇到的問題', en: 'Challenges' },
+                    solutions: { zh: '解决方案', 'zh-tw': '解決方案', en: 'Solutions' },
+                    tech: '技术栈',
+                    results: { zh: '项目成果', 'zh-tw': '項目成果', en: 'Project Results' }
+                }
+            };
+            
+            projects.push(newProject);
+            loadProjectList();
+            editProject(newId);
+        }
+
+        // 删除项目
+        function deleteProject(projectId) {
+            if (confirm('确定要删除这个项目吗？')) {
+                const index = projects.findIndex(p => p.id === projectId);
+                if (index > -1) {
+                    projects.splice(index, 1);
+                    localStorage.setItem('projectsData', JSON.stringify(projects));
+                    console.log('项目删除后，保存到localStorage:', projects.length, '个项目');
+                    loadProjectList();
+                    initProjects();
+                    alert('项目删除成功！');
+                }
+            }
+        }
+
+        // 导出数据
+        function exportData() {
+            const dataStr = JSON.stringify(projects, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'projects-data.json';
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // 导入数据
+        function importData() {
+            document.getElementById('importFile').click();
+        }
+
+        // 处理文件导入
+        function handleFileImport(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const importedData = JSON.parse(e.target.result);
+                        projects = importedData;
+                        localStorage.setItem('projectsData', JSON.stringify(projects));
+                        loadProjectList();
+                        initProjects();
+                        alert('数据导入成功！');
+                    } catch (error) {
+                        alert('文件格式错误，请选择有效的JSON文件！');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        // 恢复默认数据
+        function resetToDefault() {
+            if (confirm('确定要恢复默认数据吗？这将覆盖所有当前的项目数据！')) {
+                localStorage.removeItem('projectsData');
+                location.reload();
+            }
+        }
+
+        // 检查localStorage状态
+        function checkLocalStorage() {
+            const savedData = localStorage.getItem('projectsData');
+            const currentProjects = projects.length;
+            
+            let message = `当前内存中项目数: ${currentProjects}\n`;
+            message += `localStorage中数据: ${savedData ? '存在' : '不存在'}\n`;
+            
+            if (savedData) {
+                try {
+                    const parsedData = JSON.parse(savedData);
+                    message += `localStorage中项目数: ${parsedData.length}\n`;
+                    message += `数据是否一致: ${parsedData.length === currentProjects ? '是' : '否'}`;
+                } catch (error) {
+                    message += `localStorage数据解析错误: ${error.message}`;
+                }
+            }
+            
+            alert(message);
+            console.log('localStorage检查结果:', {
+                memoryProjects: currentProjects,
+                localStorageData: savedData,
+                parsedData: savedData ? JSON.parse(savedData) : null
+            });
+        }
+
+        // 强制同步localStorage数据
+        function syncFromLocalStorage() {
+            const savedData = localStorage.getItem('projectsData');
+            if (savedData) {
+                try {
+                    const parsedData = JSON.parse(savedData);
+                    projects = parsedData;
+                    console.log('强制同步：从localStorage加载了', projects.length, '个项目');
+                    initProjects(); // 重新渲染页面
+                    loadProjectList(); // 重新加载管理面板列表
+                    alert('数据已同步！当前项目数：' + projects.length);
+                } catch (error) {
+                    alert('数据同步失败：' + error.message);
+                }
+            } else {
+                alert('localStorage中没有数据');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // 尝试从localStorage加载数据，如果没有则使用默认数据
+            const savedData = localStorage.getItem('projectsData');
+            console.log('页面加载时，localStorage中的数据:', savedData ? '存在' : '不存在');
+            if (savedData) {
+                try {
+                    const parsedData = JSON.parse(savedData);
+                    projects = parsedData; // 直接赋值，不要使用默认数据
+                    console.log('从localStorage加载了', projects.length, '个项目');
+                } catch (error) {
+                    console.log('localStorage数据解析错误，使用默认项目数据:', error);
+                }
+            } else {
+                console.log('localStorage中没有数据，使用默认项目数据，共', projects.length, '个项目');
+            }
+            
+            // Initialize dynamic background
+            initDynamicBackground();
+            
+            // Initialize projects
+            initProjects();
+            
+            // Initialize scroll animations
+            initScrollAnimations();
+            
+            // Initialize interactive elements
+            initInteractiveElements();
+            
+            // Initialize admin system
+            initAdminSystem();
+            
+            // 键盘快捷键激活管理面板 (Ctrl + Shift + A)
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+                    e.preventDefault();
+                    showAdminPanel();
+                }
+            });
+            
+            // Language toggle
+            const langItems = document.querySelectorAll('[data-lang]');
+            langItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const lang = this.getAttribute('data-lang');
+                    updateLanguage(lang);
+                });
+            });
+            
+            // Filter tabs
+            const filterTabs = document.querySelectorAll('.filter-tab');
+            filterTabs.forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const filter = this.getAttribute('data-filter');
+                    filterProjects(filter);
+                    
+                    // Update active tab with animation
+                    filterTabs.forEach(t => {
+                        t.classList.remove('active');
+                        t.style.transform = 'scale(1)';
+                    });
+                    this.classList.add('active');
+                    this.style.transform = 'scale(1.05)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 200);
+                });
+            });
+            
+        });
+
+        // Scroll animations
+        function initScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all scroll-reveal elements
+            document.querySelectorAll('.scroll-reveal').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Interactive elements
+        function initInteractiveElements() {
+            // Add hover effects to project cards
+            document.addEventListener('mouseover', function(e) {
+                if (e.target.closest('.project-card')) {
+                    const card = e.target.closest('.project-card');
+                    card.style.transform = 'translateY(-8px) scale(1.02)';
+                }
+            });
+
+            document.addEventListener('mouseout', function(e) {
+                if (e.target.closest('.project-card')) {
+                    const card = e.target.closest('.project-card');
+                    card.style.transform = 'translateY(0) scale(1)';
+                }
+            });
+
+            // Add ripple effect to buttons
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.ripple')) {
+                    const button = e.target.closest('.ripple');
+                    const ripple = document.createElement('span');
+                    const rect = button.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.cssText = `
+                        position: absolute;
+                        width: ${size}px;
+                        height: ${size}px;
+                        left: ${x}px;
+                        top: ${y}px;
+                        background: rgba(255, 255, 255, 0.3);
+                        border-radius: 50%;
+                        transform: scale(0);
+                        animation: ripple 0.6s linear;
+                        pointer-events: none;
+                    `;
+                    
+                    button.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                }
+            });
+        }
+
+        function updateLanguage(lang) {
+            currentLang = lang;
+            const elements = document.querySelectorAll('[data-en][data-zh]');
+            const langText = document.getElementById('lang-text');
+            
+            elements.forEach(element => {
+                if (lang === 'zh') {
+                    element.textContent = element.getAttribute('data-zh');
+                } else if (lang === 'zh-tw') {
+                    element.textContent = element.getAttribute('data-zh-tw');
+                } else {
+                    element.textContent = element.getAttribute('data-en');
+                }
+            });
+            
+            
+            // Update language toggle button text
+            if (lang === 'zh') {
+                langText.textContent = '简';
+            } else if (lang === 'zh-tw') {
+                langText.textContent = '繁';
+            } else {
+                langText.textContent = 'EN';
+            }
+        }
+
+        // 统一动态背景系统 - 图形渐变元素
+        function initGradientShapes() {
+            const container = document.body;
+            
+            function createGradientShape() {
+                const shape = document.createElement('div');
+                const shapes = ['circle', 'square', 'triangle', 'diamond'];
+                const randomShape = shapes[Math.floor(Math.random() * shapes.length)];
+                const size = 20 + Math.random() * 60;
+                const opacity = 0.05 + Math.random() * 0.1;
+                
+                let shapeStyle = '';
+                switch (randomShape) {
+                    case 'circle':
+                        shapeStyle = `border-radius: 50%; width: ${size}px; height: ${size}px;`;
+                        break;
+                    case 'square':
+                        shapeStyle = `width: ${size}px; height: ${size}px;`;
+                        break;
+                    case 'triangle':
+                        shapeStyle = `width: 0; height: 0; border-left: ${size/2}px solid transparent; border-right: ${size/2}px solid transparent; border-bottom: ${size}px solid rgba(255, 255, 255, ${opacity});`;
+                        break;
+                    case 'diamond':
+                        shapeStyle = `width: ${size}px; height: ${size}px; transform: rotate(45deg);`;
+                        break;
+                }
+                
+                shape.style.cssText = `
+                    position: fixed;
+                    ${shapeStyle}
+                    background: linear-gradient(45deg, rgba(255, 255, 255, ${opacity}), rgba(255, 255, 255, ${opacity * 0.5}));
+                    top: ${Math.random() * 100}%;
+                    left: ${Math.random() * 100}%;
+                    pointer-events: none;
+                    z-index: -50;
+                    animation: shapeFloat ${3 + Math.random() * 5}s linear infinite;
+                `;
+                
+                container.appendChild(shape);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    if (shape.parentNode) {
+                        shape.parentNode.removeChild(shape);
+                    }
+                }, 20000);
+            }
+            
+            // Create initial shapes
+            for (let i = 0; i < 8; i++) {
+                setTimeout(createGradientShape, i * 50);
+            }
+            
+            // Add new shapes periodically
+            setInterval(createGradientShape, 3000);
+        }
+
+        function initGradientWaves() {
+            const container = document.body;
+            
+            function createGradientWave() {
+                const wave = document.createElement('div');
+                const width = 200 + Math.random() * 300;
+                const height = 2 + Math.random() * 4;
+                const opacity = 0.05 + Math.random() * 0.1;
+                
+                wave.style.cssText = `
+                    position: fixed;
+                    width: ${width}px;
+                    height: ${height}px;
+                    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, ${opacity}), transparent);
+                    top: ${Math.random() * 100}%;
+                    left: ${Math.random() * 100}%;
+                    pointer-events: none;
+                    z-index: -50;
+                    animation: waveFlow ${2 + Math.random() * 4}s linear infinite;
+                `;
+                
+                container.appendChild(wave);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    if (wave.parentNode) {
+                        wave.parentNode.removeChild(wave);
+                    }
+                }, 15000);
+            }
+            
+            // Create initial waves
+            for (let i = 0; i < 6; i++) {
+                setTimeout(createGradientWave, i * 100);
+            }
+            
+            // Add new waves periodically
+            setInterval(createGradientWave, 4000);
+        }
+
+        function initGradientParticles() {
+            const container = document.body;
+            
+            function createGradientParticle() {
+                const particle = document.createElement('div');
+                const size = 3 + Math.random() * 8;
+                const opacity = 0.05 + Math.random() * 0.1;
+                
+                particle.style.cssText = `
+                    position: fixed;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: radial-gradient(circle, rgba(255, 255, 255, ${opacity}), transparent);
+                    border-radius: 50%;
+                    top: ${Math.random() * 100}%;
+                    left: ${Math.random() * 100}%;
+                    pointer-events: none;
+                    z-index: -50;
+                    animation: particleFloat ${2 + Math.random() * 3}s linear infinite;
+                `;
+                
+                container.appendChild(particle);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                    }
+                }, 15000);
+            }
+            
+            // Create initial particles
+            for (let i = 0; i < 12; i++) {
+                setTimeout(createGradientParticle, i * 30);
+            }
+            
+            // Add new particles periodically
+            setInterval(createGradientParticle, 2000);
+        }
+
+        function initGradientLines() {
+            const container = document.body;
+            
+            function createGradientLine() {
+                const line = document.createElement('div');
+                const isVertical = Math.random() > 0.5;
+                const length = 50 + Math.random() * 150;
+                const opacity = 0.05 + Math.random() * 0.1;
+                
+                line.style.cssText = `
+                    position: fixed;
+                    ${isVertical ? `width: 1px; height: ${length}px;` : `width: ${length}px; height: 1px;`}
+                    background: linear-gradient(${isVertical ? '180deg' : '90deg'}, transparent, rgba(255, 255, 255, ${opacity}), transparent);
+                    top: ${Math.random() * 100}%;
+                    left: ${Math.random() * 100}%;
+                    pointer-events: none;
+                    z-index: -50;
+                    animation: linePulse ${2 + Math.random() * 3}s ease-in-out infinite;
+                `;
+                
+                container.appendChild(line);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    if (line.parentNode) {
+                        line.parentNode.removeChild(line);
+                    }
+                }, 10000);
+            }
+            
+            // Create initial lines
+            for (let i = 0; i < 10; i++) {
+                setTimeout(createGradientLine, i * 50);
+            }
+            
+            // Add new lines periodically
+            setInterval(createGradientLine, 3000);
+        }
+
+        // 初始化统一动态背景系统
+        function initDynamicBackground() {
+            console.log('=== 初始化动态背景系统 ===');
+            // 启动所有动态背景元素
+            initGradientShapes();
+            initGradientWaves();
+            initGradientParticles();
+            initGradientLines();
+            console.log('=== 动态背景系统初始化完成 ===');
+        }
+
+
+        // Projects data
+        let projects = [
+            {
+                id: 1,
+                title: {
+                    en: "Gamified Vocabulary Learning",
+                    zh: "游戏化背单词工具",
+                    'zh-tw': "遊戲化背單詞工具"
+                },
+                description: {
+                    en: "An AI-powered vocabulary learning tool with game mechanics to enhance student engagement and retention.",
+                    zh: "基于AI的词汇学习工具，通过游戏机制提高学习效果。",
+                    'zh-tw': "基於AI的詞彙學習工具，通過遊戲機制提高學習效果。"
+                },
+                category: "gamification",
+                image: "./images/portfolio/1.jpg",
+                details: {
+                    background: {
+                        en: "To address the problem of boring vocabulary learning, I designed this gamified learning tool that combines AI technology with engaging game mechanics to make vocabulary acquisition more effective and enjoyable for students.",
+                        zh: "为了解决学生背单词枯燥的问题，我设计了这个游戏化的学习工具，结合AI技术和有趣的游戏机制，让词汇学习更加高效和有趣。",
+                        'zh-tw': "為了解決學生背單詞枯燥的問題，我設計了這個遊戲化的學習工具，結合AI技術和有趣的遊戲機制，讓詞彙學習更加高效和有趣。"
+                    },
+                    concept: {
+                        en: "Based on cognitive science theory, using gamification elements to improve learning motivation and memory effects. The design incorporates spaced repetition, immediate feedback, and progressive difficulty to optimize learning outcomes.",
+                        zh: "基于认知科学理论，通过游戏化元素提高学习动机和记忆效果。设计融合了间隔重复、即时反馈和渐进式难度，以优化学习效果。",
+                        'zh-tw': "基於認知科學理論，通過遊戲化元素提高學習動機和記憶效果。設計融合了間隔重複、即時反饋和漸進式難度，以優化學習效果。"
+                    },
+                    aiProcess: {
+                        en: "• Discussed game mechanics design with ChatGPT\n• Used Cursor for code development\n• Optimized UI design through AI",
+                        zh: "• 与ChatGPT讨论游戏机制设计\n• 使用Cursor进行代码开发\n• 通过AI优化用户界面设计",
+                        'zh-tw': "• 與ChatGPT討論遊戲機制設計\n• 使用Cursor進行代碼開發\n• 通過AI優化用戶界面設計"
+                    },
+                    challenges: {
+                        en: "• How to balance playfulness and educational value?\n• How to design effective reward mechanisms?",
+                        zh: "• 如何平衡游戏性和教育性？\n• 如何设计有效的奖励机制？",
+                        'zh-tw': "• 如何平衡遊戲性和教育性？\n• 如何設計有效的獎勵機制？"
+                    },
+                    solutions: {
+                        en: "• Adjusted game difficulty curve through user testing\n• Designed multi-level achievement system",
+                        zh: "• 通过用户测试调整游戏难度曲线\n• 设计多层次的成就系统",
+                        'zh-tw': "• 通過用戶測試調整遊戲難度曲線\n• 設計多層次的成就系統"
+                    },
+                    tech: "Python + Pygame + AI API + 数据库设计",
+                    results: {
+                        en: "• 40% improvement in learning efficiency\n• Significantly increased student engagement",
+                        zh: "• 用户学习效率提升40%\n• 学生参与度显著提高",
+                        'zh-tw': "• 用戶學習效率提升40%\n• 學生參與度顯著提高"
+                    }
+                }
+            },
+            {
+                id: 2,
+                title: {
+                    en: "Python Learning Game",
+                    zh: "游戏化Python学习",
+                    'zh-tw': "遊戲化Python學習"
+                },
+                description: {
+                    en: "Interactive Python programming course with gamified elements and AI assistance.",
+                    zh: "交互式Python编程课程，融合游戏化学习。",
+                    'zh-tw': "交互式Python編程課程，融合遊戲化學習。"
+                },
+                category: "gamification",
+                image: "./images/portfolio/2.jpg",
+                details: {
+                    background: {
+                        en: "Created an interactive Python learning platform that makes programming education more engaging through gamification and AI assistance, addressing the challenge of making coding accessible to beginners.",
+                        zh: "创建了一个交互式Python学习平台，通过游戏化和AI辅助让编程教育更加有趣，解决了让编程对初学者更易理解的问题。",
+                        'zh-tw': "創建了一個交互式Python學習平台，通過遊戲化和AI輔助讓編程教育更加有趣，解決了讓編程對初學者更易理解的問題。"
+                    },
+                    concept: {
+                        en: "Combining programming education with game mechanics to create an immersive learning experience. Students progress through levels, earn achievements, and receive real-time feedback while learning Python concepts.",
+                        zh: "将编程教育与游戏机制相结合，创造沉浸式学习体验。学生在学习Python概念时通过关卡、获得成就并接收实时反馈。",
+                        'zh-tw': "將編程教育與遊戲機制相結合，創造沉浸式學習體驗。學生在學習Python概念時通過關卡、獲得成就並接收實時反饋。"
+                    },
+                    aiProcess: {
+                        en: "• Used AI to generate coding exercises\n• Implemented intelligent hints system",
+                        zh: "• 使用AI生成编程练习\n• 实现智能提示系统",
+                        'zh-tw': "• 使用AI生成編程練習\n• 實現智能提示系統"
+                    },
+                    challenges: {
+                        en: "• Creating appropriate difficulty levels\n• Maintaining student interest",
+                        zh: "• 创建合适的难度级别\n• 保持学生兴趣",
+                        'zh-tw': "• 創建合適的難度級別\n• 保持學生興趣"
+                    },
+                    solutions: {
+                        en: "• Adaptive difficulty based on performance\n• Real-time feedback system",
+                        zh: "• 基于表现的适应性难度\n• 实时反馈系统",
+                        'zh-tw': "• 基於表現的適應性難度\n• 實時反饋系統"
+                    },
+                    tech: "Python + Flask + AI API + JavaScript",
+                    results: {
+                        en: "• 60% completion rate improvement\n• Higher code quality submissions",
+                        zh: "• 完成率提升60%\n• 代码质量显著提高",
+                        'zh-tw': "• 完成率提升60%\n• 代碼質量顯著提高"
+                    }
+                }
+            },
+            {
+                id: 3,
+                title: {
+                    en: "Smart Learning Assessment System",
+                    zh: "智能学习评估系统",
+                    'zh-tw': "智能學習評估系統"
+                },
+                description: {
+                    en: "An AI-powered assessment platform that provides personalized feedback and learning analytics.",
+                    zh: "基于AI的智能评估平台，提供个性化学习分析。",
+                    'zh-tw': "基於AI的智能評估平台，提供個性化學習分析。"
+                },
+                category: "ai-collaboration",
+                image: "./images/portfolio/1.jpg",
+                details: {
+                    background: {
+                        en: "Developed an intelligent assessment system to provide real-time learning insights and personalized feedback for students, helping educators make data-driven decisions about learning interventions.",
+                        zh: "开发了智能评估系统，为学生提供实时学习洞察和个性化反馈，帮助教育工作者做出基于数据的学习干预决策。",
+                        'zh-tw': "開發了智能評估系統，為學生提供實時學習洞察和個性化反饋，幫助教育工作者做出基於數據的學習干預決策。"
+                    },
+                    concept: {
+                        en: "Using machine learning algorithms to analyze student performance patterns and predict learning outcomes. The system adapts to individual learning styles and provides targeted recommendations for improvement.",
+                        zh: "使用机器学习算法分析学生表现模式并预测学习成果。系统适应个人学习风格并提供有针对性的改进建议。",
+                        'zh-tw': "使用機器學習算法分析學生表現模式並預測學習成果。系統適應個人學習風格並提供有針對性的改進建議。"
+                    },
+                    aiProcess: {
+                        en: "• Trained ML models with educational data\n• Implemented real-time analytics\n• Created personalized feedback system",
+                        zh: "• 用教育数据训练ML模型\n• 实现实时分析\n• 创建个性化反馈系统",
+                        'zh-tw': "• 用教育數據訓練ML模型\n• 實現實時分析\n• 創建個性化反饋系統"
+                    },
+                    challenges: {
+                        en: "• Handling large-scale educational data\n• Ensuring assessment accuracy",
+                        zh: "• 处理大规模教育数据\n• 确保评估准确性",
+                        'zh-tw': "• 處理大規模教育數據\n• 確保評估準確性"
+                    },
+                    solutions: {
+                        en: "• Implemented distributed processing\n• Used ensemble learning methods",
+                        zh: "• 实现分布式处理\n• 使用集成学习方法",
+                        'zh-tw': "• 實現分佈式處理\n• 使用集成學習方法"
+                    },
+                    tech: "Python + TensorFlow + PostgreSQL + Redis + Docker",
+                    results: {
+                        en: "• 85% accuracy in learning prediction\n• 50% reduction in assessment time",
+                        zh: "• 学习预测准确率85%\n• 评估时间减少50%",
+                        'zh-tw': "• 學習預測準確率85%\n• 評估時間減少50%"
+                    }
+                }
+            },
+            {
+                id: 4,
+                title: {
+                    en: "Interactive Multimedia Courseware",
+                    zh: "交互式多媒体课件",
+                    'zh-tw': "交互式多媒體課件"
+                },
+                description: {
+                    en: "Traditional educational content development with modern multimedia integration.",
+                    zh: "传统教育内容开发，融合多媒体技术。",
+                    'zh-tw': "傳統教育內容開發，融合多媒體技術。"
+                },
+                category: "traditional",
+                image: "./images/portfolio/2.jpg",
+                details: {
+                    background: {
+                        en: "Created comprehensive multimedia learning materials for K-12 education that combine traditional pedagogical approaches with modern technology to enhance student engagement and learning outcomes.",
+                        zh: "为K-12教育创建了全面的多媒体学习材料，将传统教学方法与现代技术相结合，提高学生参与度和学习成果。",
+                        'zh-tw': "為K-12教育創建了全面的多媒體學習材料，將傳統教學方法與現代技術相結合，提高學生參與度和學習成果。"
+                    },
+                    concept: {
+                        en: "Combining visual, auditory, and interactive elements for effective learning. The design follows multimedia learning principles to accommodate different learning styles and maximize knowledge retention.",
+                        zh: "结合视觉、听觉和交互元素进行有效学习。设计遵循多媒体学习原则，适应不同的学习风格并最大化知识保留。",
+                        'zh-tw': "結合視覺、聽覺和交互元素進行有效學習。設計遵循多媒體學習原則，適應不同的學習風格並最大化知識保留。"
+                    },
+                    aiProcess: {
+                        en: "• Used AI for content optimization\n• Automated multimedia generation",
+                        zh: "• 使用AI进行内容优化\n• 自动化多媒体生成",
+                        'zh-tw': "• 使用AI進行內容優化\n• 自動化多媒體生成"
+                    },
+                    challenges: {
+                        en: "• Balancing content quality and production speed\n• Ensuring cross-platform compatibility",
+                        zh: "• 平衡内容质量和生产速度\n• 确保跨平台兼容性",
+                        'zh-tw': "• 平衡內容質量和生產速度\n• 確保跨平台兼容性"
+                    },
+                    solutions: {
+                        en: "• Implemented modular design approach\n• Used responsive design principles",
+                        zh: "• 实现模块化设计方法\n• 使用响应式设计原则",
+                        'zh-tw': "• 實現模塊化設計方法\n• 使用響應式設計原則"
+                    },
+                    tech: "HTML5 + CSS3 + JavaScript + Adobe Creative Suite + AI Tools",
+                    results: {
+                        en: "• 200+ interactive lessons created\n• 90% student satisfaction rate",
+                        zh: "• 创建了200+交互式课程\n• 学生满意度90%",
+                        'zh-tw': "• 創建了200+交互式課程\n• 學生滿意度90%"
+                    }
+                }
+            }
+        ];
+
+        function initProjects() {
+            const grid = document.getElementById('projectsGrid');
+            grid.innerHTML = '';
+            
+            projects.forEach((project, index) => {
+                const projectCard = createProjectCard(project, index);
+                projectCard.classList.remove('hidden'); // Ensure no hidden class initially
+                grid.appendChild(projectCard);
+            });
+        }
+
+        function createProjectCard(project, index) {
+            const card = document.createElement('div');
+            card.className = 'project-card loading';
+            card.setAttribute('data-category', project.category);
+            
+            const title = project.title[currentLang] || project.title['zh'];
+            const description = project.description[currentLang] || project.description['zh'];
+            
+            // Get category display name
+            const categoryNames = {
+                'gamification': { en: 'Gamified', zh: '游戏化', 'zh-tw': '遊戲化' },
+                'traditional': { en: 'Traditional', zh: '传统', 'zh-tw': '傳統' },
+                'ai-collaboration': { en: 'AI Powered', zh: 'AI驱动', 'zh-tw': 'AI驅動' }
+            };
+            const categoryName = categoryNames[project.category][currentLang] || categoryNames[project.category]['zh'];
+            
+            card.innerHTML = `
+                <div class="project-image-container">
+                    <img src="${project.image}" alt="${title}" class="project-image">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">${title}</h3>
+                    <p class="project-description">${description}</p>
+                    <div class="project-actions">
+                        <a href="#" class="project-btn" onclick="showProjectDetails(${project.id})">
+                            <i class="fas fa-eye"></i>
+                            <span data-en="View Details" data-zh="查看详情" data-zh-tw="查看詳情">查看详情</span>
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            // Add staggered animation
+            setTimeout(() => {
+                card.classList.remove('loading');
+                card.classList.add('loaded');
+            }, index * 100);
+            
+            return card;
+        }
+
+        function showProjectDetails(projectId) {
+            const project = projects.find(p => p.id === projectId);
+            if (!project) return;
+            
+            const title = project.title[currentLang] || project.title['zh'];
+            const description = project.description[currentLang] || project.description['zh'];
+            const details = project.details;
+            
+            // Get category display name
+            const categoryNames = {
+                'gamification': { en: 'Gamified Learning', zh: '游戏化学习', 'zh-tw': '遊戲化學習' },
+                'traditional': { en: 'Traditional Project', zh: '传统项目', 'zh-tw': '傳統項目' },
+                'ai-collaboration': { en: 'AI Collaboration', zh: 'AI协作', 'zh-tw': 'AI協作' }
+            };
+            const categoryName = categoryNames[project.category][currentLang] || categoryNames[project.category]['zh'];
+            
+            document.getElementById('modalTitle').textContent = title;
+            
+            const modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = `
+                <div class="project-hero">
+                    <div class="project-hero-image">
+                        <img src="${project.image}" alt="${title}">
+                    </div>
+                    <div class="project-hero-info">
+                        <p class="project-description-large">${description}</p>
+                        <div class="project-actions-large">
+                            <a href="#" class="btn-primary-large" onclick="openProjectDemo(${project.id})">
+                                <i class="fas fa-external-link-alt"></i>
+                                <span data-en="View Demo" data-zh="查看演示" data-zh-tw="查看演示">查看演示</span>
+                            </a>
+                            <a href="#" class="btn-secondary-large" onclick="shareProject(${project.id})">
+                                <i class="fas fa-share-alt"></i>
+                                <span data-en="Share" data-zh="分享" data-zh-tw="分享">分享</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-sections">
+                    <div class="modal-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-lightbulb"></i>
+                            <span data-en="Project Background" data-zh="项目背景" data-zh-tw="項目背景">项目背景</span>
+                        </h3>
+                        <p class="section-content">${details.background[currentLang] || details.background['zh'] || details.background['zh-tw']}</p>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-palette"></i>
+                            <span data-en="Design Concept" data-zh="设计理念" data-zh-tw="設計理念">设计理念</span>
+                        </h3>
+                        <p class="section-content">${details.concept[currentLang] || details.concept['zh'] || details.concept['zh-tw']}</p>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-robot"></i>
+                            <span data-en="AI Collaboration Process" data-zh="AI协作过程" data-zh-tw="AI協作過程">AI协作过程</span>
+                        </h3>
+                        <div class="section-content" style="white-space: pre-line;">${details.aiProcess[currentLang] || details.aiProcess['zh'] || details.aiProcess['zh-tw']}</div>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-tools"></i>
+                            <span data-en="Technical Implementation" data-zh="技术实现" data-zh-tw="技術實現">技术实现</span>
+                        </h3>
+                        <p class="section-content">${details.tech}</p>
+                        <div class="tech-stack">
+                            ${details.tech.split(' + ').map(tech => `<span class="tech-item">${tech.trim()}</span>`).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span data-en="Challenges" data-zh="遇到的问题" data-zh-tw="遇到的問題">遇到的问题</span>
+                        </h3>
+                        <div class="section-content" style="white-space: pre-line;">${details.challenges[currentLang] || details.challenges['zh'] || details.challenges['zh-tw']}</div>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-check-circle"></i>
+                            <span data-en="Solutions" data-zh="解决方案" data-zh-tw="解決方案">解决方案</span>
+                        </h3>
+                        <div class="section-content" style="white-space: pre-line;">${details.solutions[currentLang] || details.solutions['zh'] || details.solutions['zh-tw']}</div>
+                    </div>
+                </div>
+                
+                <div class="modal-section" style="grid-column: 1 / -1; margin-top: 1rem;">
+                    <h3 class="section-title">
+                        <i class="fas fa-chart-line"></i>
+                        <span data-en="Project Results" data-zh="项目成果" data-zh-tw="項目成果">项目成果</span>
+                    </h3>
+                    <div class="results-grid">
+                        <div class="result-item">
+                            <div class="result-value">4.8</div>
+                            <div class="result-label" data-en="User Rating" data-zh="用户评分" data-zh-tw="用戶評分">用户评分</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-value">85%</div>
+                            <div class="result-label" data-en="Success Rate" data-zh="成功率" data-zh-tw="成功率">成功率</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-value">500+</div>
+                            <div class="result-label" data-en="Users" data-zh="用户数" data-zh-tw="用戶數">用户数</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-value">2024</div>
+                            <div class="result-label" data-en="Year" data-zh="年份" data-zh-tw="年份">年份</div>
+                        </div>
+                    </div>
+                    <div class="section-content" style="white-space: pre-line; margin-top: 1rem;">${details.results[currentLang] || details.results['zh'] || details.results['zh-tw']}</div>
+                </div>
+            `;
+            
+            // Update language for modal content
+            updateModalLanguage();
+            
+            const modal = new bootstrap.Modal(document.getElementById('projectModal'));
+            modal.show();
+        }
+
+        function updateModalLanguage() {
+            const modalElements = document.querySelectorAll('#modalBody [data-en][data-zh]');
+            modalElements.forEach(element => {
+                if (currentLang === 'zh') {
+                    element.textContent = element.getAttribute('data-zh');
+                } else if (currentLang === 'zh-tw') {
+                    element.textContent = element.getAttribute('data-zh-tw');
+                } else {
+                    element.textContent = element.getAttribute('data-en');
+                }
+            });
+        }
+
+        let currentFilter = 'all';
+        function filterProjects(filter) {
+            currentFilter = filter;
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const cards = document.querySelectorAll('.project-card');
+            
+            cards.forEach(card => {
+                const category = card.getAttribute('data-category');
+                
+                if (currentFilter === 'all' || category === currentFilter) {
+                    card.classList.remove('hidden');
+                    card.classList.add('fade-in');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+
+        // Enhanced project loading with animations
+        function initProjects() {
+            const grid = document.getElementById('projectsGrid');
+            grid.innerHTML = '';
+            
+            projects.forEach((project, index) => {
+                const projectCard = createProjectCard(project, index);
+                grid.appendChild(projectCard);
+            });
+            
+        }
+
+        // Project demo and share functions
+        function openProjectDemo(projectId) {
+            const project = projects.find(p => p.id === projectId);
+            if (!project) return;
+            
+            // In a real implementation, this would open the actual demo
+            alert(`Opening demo for: ${project.title[currentLang] || project.title['zh-tw']}\n\nThis would typically open the live demo or GitHub repository.`);
+        }
+
+        function shareProject(projectId) {
+            const project = projects.find(p => p.id === projectId);
+            if (!project) return;
+            
+            const title = project.title[currentLang] || project.title['zh'];
+            const description = project.description[currentLang] || project.description['zh'];
+            const url = window.location.href;
+            
+            const shareText = `${title}\n\n${description}\n\nView more: ${url}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: title,
+                    text: description,
+                    url: url
+                });
+            } else {
+                // Fallback: copy to clipboard
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('Project information copied to clipboard!');
+                }).catch(() => {
+                    // Fallback: show share text
+                    prompt('Copy this text to share:', shareText);
+                });
+            }
+        }
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shapeFloat {
+                0% { 
+                    transform: translateY(100vh) rotate(0deg); 
+                    opacity: 0; 
+                }
+                10% { opacity: 1; }
+                90% { opacity: 1; }
+                100% { 
+                    transform: translateY(-100vh) rotate(360deg); 
+                    opacity: 0; 
+                }
+            }
+            
+            @keyframes waveFlow {
+                0% { 
+                    transform: translateX(-100%); 
+                    opacity: 0; 
+                }
+                10% { opacity: 1; }
+                90% { opacity: 1; }
+                100% { 
+                    transform: translateX(100vw); 
+                    opacity: 0; 
+                }
+            }
+
+            @keyframes particleFloat {
+                0% { 
+                    transform: translate(0, 100vh) scale(0); 
+                    opacity: 0; 
+                }
+                10% { 
+                    opacity: 1; 
+                    transform: translate(0, 90vh) scale(1); 
+                }
+                90% { 
+                    opacity: 1; 
+                    transform: translate(0, -10vh) scale(1); 
+                }
+                100% { 
+                    transform: translate(0, -100vh) scale(0); 
+                    opacity: 0; 
+                }
+            }
+
+            @keyframes linePulse {
+                0%, 100% { 
+                    opacity: 0.1; 
+                    transform: scale(1); 
+                }
+                50% { 
+                    opacity: 0.6; 
+                    transform: scale(1.2); 
+                }
+            }
+            
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            .project-card.loaded {
+                animation: fadeInUp 0.6s ease forwards;
+            }
+            
+            /* Modal animations */
+            .modal.fade .modal-dialog {
+                transform: scale(0.8) translateY(-50px);
+                transition: transform 0.3s ease-out;
+            }
+            
+            .modal.show .modal-dialog {
+                transform: scale(1) translateY(0);
+            }
+            
+            .modal-section {
+                animation: fadeInUp 0.6s ease forwards;
+            }
+            
+            .modal-section:nth-child(1) { animation-delay: 0.1s; }
+            .modal-section:nth-child(2) { animation-delay: 0.2s; }
+            .modal-section:nth-child(3) { animation-delay: 0.3s; }
+            .modal-section:nth-child(4) { animation-delay: 0.4s; }
+            .modal-section:nth-child(5) { animation-delay: 0.5s; }
+            .modal-section:nth-child(6) { animation-delay: 0.6s; }
+            
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

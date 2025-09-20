@@ -4,45 +4,927 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Philip Pan</title>
+    <title>Philip Pan - Instructional & E-learning Developer</title>
+    <meta name="description" content="Philip Pan - Instructional & E-learning Developer specializing in K12 English language learning technology">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        .nav-link {
-            color: #000000
+        /* Version: 2024-01-15-v13 - Changed navbar borders to black */
+        :root {
+            --primary-color: #ffffff;
+            --secondary-color: #cccccc;
+            --accent-color: #ffffff;
+            --text-dark: #ffffff;
+            --text-light: #cccccc;
+            --bg-dark: #000000;
+            --bg-darker: #000000;
+            --bg-light: #000000;
+            --bg-white: #000000;
+            --border-color: rgba(255, 255, 255, 0.2);
+            --code-green: #ffffff;
+            --code-blue: #ffffff;
+            --code-purple: #ffffff;
+            --code-yellow: #ffffff;
+            --shadow-soft: 0 2px 10px rgba(255, 255, 255, 0.1);
+            --shadow-hover: 0 4px 20px rgba(255, 255, 255, 0.2);
         }
 
-        hr {
-            border-top: 1px solid #000000; /* 或者使用黑色的十六进制值#000 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--bg-darker);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated Code Background */
+        .code-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -30;
+            background: transparent;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .code-line {
+            position: absolute;
+            color: #ffffff;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            opacity: 0.2;
+            white-space: nowrap;
+            animation: codeFlow 15s linear infinite;
+        }
+
+        @keyframes shapeFloat {
+            0% { 
+                transform: translateY(100vh) rotate(0deg); 
+                opacity: 0; 
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { 
+                transform: translateY(-100vh) rotate(360deg); 
+                opacity: 0; 
+            }
+        }
+
+        /* Matrix Rain Effect */
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -30;
+            background: transparent;
+            pointer-events: none;
+        }
+
+        .matrix-column {
+            position: absolute;
+            color: #ffffff;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.2;
+            opacity: 0.2;
+            animation: matrixFall 10s linear infinite;
+        }
+
+        @keyframes waveFlow {
+            0% { 
+                transform: translateX(-100%); 
+                opacity: 0; 
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { 
+                transform: translateX(100vw); 
+                opacity: 0; 
+            }
+        }
+
+        @keyframes particleFloat {
+            0% { 
+                transform: translate(0, 100vh) scale(0); 
+                opacity: 0; 
+            }
+            10% { 
+                opacity: 1; 
+                transform: translate(0, 90vh) scale(1); 
+            }
+            90% { 
+                opacity: 1; 
+                transform: translate(0, -10vh) scale(1); 
+            }
+            100% { 
+                transform: translate(0, -100vh) scale(0); 
+                opacity: 0; 
+            }
+        }
+
+        @keyframes linePulse {
+            0%, 100% { 
+                opacity: 0.1; 
+                transform: scale(1); 
+            }
+            50% { 
+                opacity: 0.6; 
+                transform: scale(1.2); 
+            }
+        }
+
+        /* Floating Code Elements */
+        .floating-code {
+            position: absolute;
+            color: #ffffff;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            opacity: 0.1;
+            animation: float 20s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) translateX(0px);
+            }
+            25% {
+                transform: translateY(-20px) translateX(10px);
+            }
+            50% {
+                transform: translateY(0px) translateX(20px);
+            }
+            75% {
+                transform: translateY(20px) translateX(10px);
+            }
+        }
+
+        /* Navigation */
+        .navbar {
+            background: #000000;
+            backdrop-filter: blur(10px);
+            border-bottom: none;
+            padding: 1rem 0;
+            z-index: 1000;
+        }
+
+        .navbar-nav {
+            gap: 0.5rem;
+        }
+
+        .navbar-nav .nav-item {
+            position: relative;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: #ffffff !important;
+            font-size: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--text-light) !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 1rem !important;
+            display: block;
+            text-decoration: none;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #ffffff !important;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 5px;
+            left: 50%;
+            background: #ffffff;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 80%;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            padding: 150px 0 100px;
+            background: transparent;
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-title {
+            font-size: 5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 2rem;
+            font-family: 'Courier New', monospace;
+            text-align: left;
+        }
+
+
+
+        .hero-description {
+            font-size: 1.3rem;
+            color: #cccccc;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        .btn-primary-custom {
+            background: transparent;
+            border: 2px solid #ffffff;
+            color: #ffffff;
+            padding: 12px 30px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary-custom:hover {
+            background: #ffffff;
+            color: #000000;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary-custom::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        /* Button hover effect for CTA button */
+        .btn-primary:hover {
+            background: #ffffff !important;
+            color: #000000 !important;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:hover i,
+        .btn-primary:hover span {
+            color: #000000 !important;
+        }
+
+        .btn-primary-custom:hover::before {
+            left: 100%;
+        }
+
+        .profile-image {
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center 45%;
+            border: 3px solid #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.05);
+        }
+
+        /* Sections */
+        .section {
+            padding: 80px 0;
+            background: transparent;
+            position: relative;
+            z-index: 10;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 3rem;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+
+        .card-custom {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            margin-bottom: 1rem;
+        }
+
+        .card-custom:hover {
+            transform: translateY(-5px);
+            border-color: #ffffff;
+            background: rgba(0, 0, 0, 1);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        .card-custom:hover i,
+        .card-custom:hover h5,
+        .card-custom:hover p {
+            color: #ffffff !important;
+        }
+
+        .card-custom:hover .text-primary {
+            color: #ffffff !important;
+        }
+
+        .card-custom:hover .text-primary i {
+            color: #ffffff !important;
+        }
+
+        .card-custom i {
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .card-custom h5 {
+            color: #ffffff;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .card-custom p {
+            color: #cccccc;
+            margin-bottom: 0;
+        }
+
+        .text-primary {
+            color: #ffffff !important;
+        }
+
+        h2, h3 {
+            color: #ffffff !important;
+        }
+
+        /* Language switcher styles */
+        .dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.1) !important;
+            color: #ffffff !important;
+        }
+
+        .dropdown-menu {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Fade in animation */
+        .fade-in {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 3.5rem;
+            }
+            
+            .hero-description {
+                font-size: 1.1rem;
+            }
+            
+            .profile-image {
+                width: 300px;
+                height: 300px;
+                margin-top: 2rem;
+            }
         }
     </style>
 </head>
 
 <body>
+    <!-- Dynamic Code Background -->
+    <div class="code-background" id="codeBackground"></div>
+    <div class="matrix-rain" id="matrixRain"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
 <div class="container">
-
-    <div class="header"></div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" id="nav-home-tab" data-en="HOME" data-zh="首页" data-zh-tw="首頁">首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="ai-education.html" data-en="AI EDUCATION" data-zh="AI教育" data-zh-tw="AI教育">AI教育</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <button class="btn btn-outline-light btn-sm ms-2 dropdown-toggle" id="language-toggle" data-bs-toggle="dropdown" style="border: 1px solid var(--primary-color); color: var(--primary-color); background: transparent; padding: 0.5rem 1rem; border-radius: 4px; transition: all 0.3s ease;">
+                            <i class="fas fa-globe me-1"></i><span id="lang-text">简</span>
+                        </button>
+                        <ul class="dropdown-menu" style="background: var(--bg-light); border: 1px solid var(--border-color);">
+                            <li><a class="dropdown-item" href="#" data-lang="zh" style="color: var(--text-dark);">简体中文</a></li>
+                            <li><a class="dropdown-item" href="#" data-lang="zh-tw" style="color: var(--text-dark);">繁體中文</a></li>
+                            <li><a class="dropdown-item" href="#" data-lang="en" style="color: var(--text-dark);">English</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
 </div>
+    </nav>
 
-<hr class="bg-dark" style="border-width: 2px; border-style: solid; border-color: black;">
-
+    <!-- Main Content -->
+    <div id="main-content" style="position: relative; z-index: 10;">
 <div class="tab-content" id="nav-tabContent">
+            <!-- Home Content -->
+            <div id="home-content">
+                <!-- Hero Section -->
+                <section class="hero-section">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 text-center" style="padding-right: 1rem;">
+                                <img src="./images/frontpage/1.jpg" alt="Philip Pan" class="profile-image">
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="hero-content" style="padding-left: 1rem; display: flex; flex-direction: column; justify-content: center; height: 100%;">
+                                    <h1 class="hero-title" data-en="Hello, Welcome!" data-zh="您好，欢迎！" data-zh-tw="您好，歡迎！">您好，欢迎！</h1>
+                                    <p class="hero-description" data-en="My name is Junquan. I am Learning Designer passionate about creating educational experience through AI. My expertise focused on using educational large dataset to empower learning design and AI application in educational settings. I helped transform complex concepts and knowledge into accessible and interactive learning solutions for a variety of learners." data-zh="我叫俊权。我是一名学习设计师，热衷于通过AI创造教育体验。我的专业专注于使用教育大数据集来赋能学习设计和AI在教育环境中的应用。我帮助将复杂的概念和知识转化为各种学习者可访问和互动的学习解决方案。" data-zh-tw="我叫俊權。我是一名學習設計師，熱衷於通過AI創造教育體驗。我的專業專注於使用教育大數據集來賦能學習設計和AI在教育環境中的應用。我幫助將複雜的概念和知識轉化為各種學習者可訪問和互動的學習解決方案。">
+                                        我叫俊权。我是一名学习设计师，热衷于通过AI创造教育体验。我的专业专注于使用教育大数据集来赋能学习设计和AI在教育环境中的应用。我帮助将复杂的概念和知识转化为各种学习者可访问和互动的学习解决方案。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
+                <!-- About Section -->
+                <section class="section">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-8 mx-auto text-center">
+                                <h2 class="section-title fade-in" data-en="About Me" data-zh="关于我" data-zh-tw="關於我">关于我</h2>
+                                <div class="fade-in" style="text-align: justify; line-height: 1.8; font-size: 1rem;">
+                                    <p class="mb-4" data-en="During my undergraduate studies, I majored in Teaching Chinese as a Foreign Language, systematically studying linguistic principles, second language acquisition, pedagogy, and educational psychology. After graduation, I went to the United States for further study with a scholarship and obtained a master's degree from The Ohio State University, with research directions including linguistics, Chinese linguistics, and sociophonetics. My learning and exchange experiences have given me a strong interest in language and language learning. After graduation, I started my career as a learning designer at a K12 English education technology company in Beijing." data-zh="本科阶段我主修对外汉语，系统学习了语言学纲要、二语习得、教育学和教育心理学。毕业后，我凭借奖学金前往美国深造，并在俄亥俄州立大学获得硕士学位，研究方向包括语言学、中文语言学和社会语音学。学习和交流的经历让我对语言及语言学习产生了浓厚的兴趣。毕业后，我在北京一家K12英语教育科技公司开启了学习设计师的职业生涯。" data-zh-tw="本科階段我主修對外漢語，系統學習了語言學綱要、二語習得、教育學和教育心理學。畢業後，我憑藉獎學金前往美國深造，並在俄亥俄州立大學獲得碩士學位，研究方向包括語言學、中文語言學和社會語音學。學習和交流的經歷讓我對語言及語言學習產生了濃厚的興趣。畢業後，我在北京一家K12英語教育科技公司開啟了學習設計師的職業生涯。">
+                                        本科阶段我主修对外汉语，系统学习了语言学纲要、二语习得、教育学和教育心理学。毕业后，我凭借奖学金前往美国深造，并在俄亥俄州立大学获得硕士学位，研究方向包括语言学、中文语言学和社会语音学。学习和交流的经历让我对语言及语言学习产生了浓厚的兴趣。毕业后，我在北京一家K12英语教育科技公司开启了学习设计师的职业生涯。
+                                    </p>
+                                    <p class="mb-4" data-en="Initially, I was mainly responsible for developing interactive electronic courseware, designing user-friendly learning interfaces, and creating multimedia learning resources to ensure that knowledge could be efficiently transmitted through multi-sensory approaches. Subsequently, I gradually became involved in the design, development, and operation of more educational products, and the course scope expanded from K12 English education to adult programming education. In this process, I developed a strong interest in data-driven educational products, so I began to expand my skills and learn data analysis tools such as Python, R, and SQL." data-zh="起初，我主要负责开发交互式电子课件，设计友好的学习界面，并制作多媒体学习资源，以确保知识能够通过多感官的方式高效传递。随后，我逐渐参与到更多教育产品的设计、研发和运营工作中，课程范围也从K12英语教育扩展至成人编程教育。在这一过程中，我对数据驱动的教育产品产生了强烈兴趣，因此开始拓展技能，学习Python、R和SQL等数据分析工具。" data-zh-tw="起初，我主要負責開發交互式電子課件，設計友好的學習界面，並製作多媒體學習資源，以確保知識能夠通過多感官的方式高效傳遞。隨後，我逐漸參與到更多教育產品的設計、研發和運營工作中，課程範圍也從K12英語教育擴展至成人編程教育。在這一過程中，我對數據驅動的教育產品產生了強烈興趣，因此開始拓展技能，學習Python、R和SQL等數據分析工具。">
+                                        起初，我主要负责开发交互式电子课件，设计友好的学习界面，并制作多媒体学习资源，以确保知识能够通过多感官的方式高效传递。随后，我逐渐参与到更多教育产品的设计、研发和运营工作中，课程范围也从K12英语教育扩展至成人编程教育。在这一过程中，我对数据驱动的教育产品产生了强烈兴趣，因此开始拓展技能，学习Python、R和SQL等数据分析工具。
+                                    </p>
+                                    <p class="mb-4" data-en="During my work at The Chinese University of Hong Kong, I applied skills in Excel, R, and SPSS to language ability assessment and analysis. At the same time, I also began to explore the application of artificial intelligence in educational scenarios, such as combining ChatGPT with Cursor to develop learning tools. The personal homepage you are currently viewing is the result of my collaboration with AI. I firmly believe that AI has enormous potential in education, and its emergence has profoundly and permanently changed our imagination and future possibilities of technology education." data-zh="在香港中文大学工作期间，我将Excel、R和SPSS等技能应用于语言能力的评估与分析。同时，我也开始探索人工智能在教育场景中的应用，例如结合ChatGPT与Cursor开发学习工具。目前你所看到的个人主页，便是我与AI协作完成的成果。我坚信，AI在教育中的应用潜力巨大，并且它的出现已经深刻且永久地改变了我们对科技教育的想象与未来可能性。" data-zh-tw="在香港中文大學工作期間，我將Excel、R和SPSS等技能應用於語言能力的評估與分析。同時，我也開始探索人工智能在教育場景中的應用，例如結合ChatGPT與Cursor開發學習工具。目前你所看到的個人主頁，便是我與AI協作完成的成果。我堅信，AI在教育中的應用潛力巨大，並且它的出現已經深刻且永久地改變了我們對科技教育的想像與未來可能性。">
+                                        在香港中文大学工作期间，我将Excel、R和SPSS等技能应用于语言能力的评估与分析。同时，我也开始探索人工智能在教育场景中的应用，例如结合ChatGPT与Cursor开发学习工具。目前你所看到的个人主页，便是我与AI协作完成的成果。我坚信，AI在教育中的应用潜力巨大，并且它的出现已经深刻且永久地改变了我们对科技教育的想象与未来可能性。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Skills Section -->
+                        <div class="row mt-5">
+                            <div class="col-lg-12">
+                                <h3 class="text-center mb-4 fade-in" data-en="Core Skills" data-zh="核心技能" data-zh-tw="核心技能" style="color: #ffffff !important; font-size: 2rem; font-weight: 700;">核心技能</h3>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-3 mb-4">
+                                        <div class="card-custom text-center p-4 fade-in">
+                                            <i class="fas fa-chart-line fa-3x text-primary mb-3" style="color: #ffffff !important;"></i>
+                                            <h5 data-en="Data Analytics" data-zh="数据分析" data-zh-tw="數據分析" style="color: #ffffff !important; font-weight: 600;">数据分析</h5>
+                                            <p style="color: white; font-size: 0.9rem;" data-en="Python, R, SQL for data analysis" data-zh="Python、R、SQL数据分析" data-zh-tw="Python、R、SQL數據分析">Python、R、SQL数据分析</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-3 mb-4">
+                                        <div class="card-custom text-center p-4 fade-in">
+                                            <i class="fas fa-language fa-3x text-primary mb-3" style="color: #ffffff !important;"></i>
+                                            <h5 data-en="Language Learning" data-zh="语言学习" data-zh-tw="語言學習" style="color: #ffffff !important; font-weight: 600;">语言学习</h5>
+                                            <p style="color: white; font-size: 0.9rem;" data-en="Language learning expertise" data-zh="专长于二语习得和跨文化交流设计" data-zh-tw="專長於二語習得和跨文化交流設計">专长于二语习得和跨文化交流设计</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-3 mb-4">
+                                        <div class="card-custom text-center p-4 fade-in">
+                                            <i class="fas fa-graduation-cap fa-3x text-primary mb-3" style="color: #ffffff !important;"></i>
+                                            <h5 data-en="Instructional Design" data-zh="教学设计" data-zh-tw="教學設計" style="color: #ffffff !important; font-weight: 600;">教学设计</h5>
+                                            <p style="color: white; font-size: 0.9rem;" data-en="Systematic learning design principles" data-zh="系统化学习设计原则" data-zh-tw="系統化學習設計原則">系统化学习设计原则</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-3 mb-4">
+                                        <div class="card-custom text-center p-4 fade-in">
+                                            <i class="fas fa-code fa-3x text-primary mb-3" style="color: #ffffff !important;"></i>
+                                            <h5 data-en="Content Development" data-zh="内容开发" data-zh-tw="內容開發" style="color: #ffffff !important; font-weight: 600;">内容开发</h5>
+                                            <p style="color: white; font-size: 0.9rem;" data-en="Multimedia content development" data-zh="开发交互式多媒体学习内容和数字平台" data-zh-tw="開發交互式多媒體學習內容和數字平台">开发交互式多媒体学习内容和数字平台</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
+                <!-- Call to Action Section -->
+                <section class="section">
+                    <div class="container text-center">
+                        <div class="row">
+                            <div class="col-lg-8 mx-auto">
+                                <h2 class="mb-4 fade-in" data-en="Ready to Work Together?" data-zh="准备一起合作吗？" data-zh-tw="準備一起合作嗎？" style="color: #ffffff !important; font-size: 2.5rem; font-weight: 700;">准备一起合作吗？</h2>
+                                <p class="mb-4 fade-in" style="color: white; font-size: 1rem; line-height: 1.6; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);" data-en="Let's collaborate to create innovative AI-powered educational solutions that transform learning experiences." data-zh="让我们携手创造创新的AI驱动教育解决方案，改变学习体验。" data-zh-tw="讓我們攜手創造創新的AI驅動教育解決方案，改變學習體驗。">
+                                    让我们携手创造创新的AI驱动教育解决方案，改变学习体验。
+                                </p>
+                                <a href="ai-education.html" class="btn btn-primary btn-lg fade-in" style="background: transparent; border: 2px solid #ffffff; color: #ffffff; padding: 15px 30px; font-size: 1.1rem; border-radius: 4px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3); display: inline-block; margin-top: 1rem;">
+                                    <i class="fas fa-robot me-2" style="color: #ffffff !important;"></i><span data-en="Explore My AI Education Work" data-zh="探索我的AI教育工作" data-zh-tw="探索我的AI教育工作" style="color: #ffffff !important;">探索我的AI教育工作</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 </div>
 
-<!-- 在表单中插入拉通的水平分割线 -->
+            <!-- AI Education Content (Hidden by default) -->
+            <div id="personal-content" style="display: none;">
+                <!-- AI Education content will be loaded here -->
+            </div>
+        </div>
+    </div>
 
 <script src="js/jquery-3.6.3.min.js"></script>
-<!-- 最新编译的 JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    $(function(){
-        $(".header").load("header.html");
-        $("#nav-tabContent").load("home.html");
-    });
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('=== DOM Content Loaded ===');
+            
+            // Initialize dynamic background
+            initDynamicBackground();
+            
+            // Initialize language (default to Simplified Chinese)
+            let currentLang = 'zh';
+            console.log('=== Initializing language system ===');
+            updateLanguage(currentLang);
+            
+            // Language switching test removed - focus on manual switching
+            
+            // Language toggle functionality
+            console.log('=== Setting up language toggle ===');
+            
+            // Language option functionality
+            const languageItems = document.querySelectorAll('.dropdown-item[data-lang]');
+            console.log('Found language items:', languageItems.length);
+            
+            if (languageItems.length === 0) {
+                console.error('No language options found!');
+            }
+            
+            languageItems.forEach((item, index) => {
+                console.log(`Item ${index + 1}:`, item.textContent, item.getAttribute('data-lang'));
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const selectedLang = this.getAttribute('data-lang');
+                    console.log('=== Language clicked:', selectedLang, '===');
+                    currentLang = selectedLang;
+                    updateLanguage(currentLang);
+                });
+            });
+            
+            // Show home content by default
+            showContent('home');
+            
+            // Navigation functionality (commented out - functions not defined)
+            // document.getElementById('nav-home-tab').addEventListener('click', function(){
+            //     showContent('home');
+            //     document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            //     this.classList.add('active');
+            // });
+
+            // document.getElementById('nav-personal-tab').addEventListener('click', function(){
+            //     const personalContent = document.getElementById('personal-content');
+            //     if (personalContent.innerHTML.trim() === '') {
+            //         fetch('personal.html')
+            //             .then(response => response.text())
+            //             .then(data => {
+            //                 personalContent.innerHTML = data;
+            //             });
+            //     }
+            //     showContent('personal');
+            //     document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            //     this.classList.add('active');
+            // });
+
+            function showContent(section) {
+                // Hide all content
+                document.getElementById('home-content').style.display = 'none';
+                document.getElementById('personal-content').style.display = 'none';
+                
+                // Show selected content
+                document.getElementById(section + '-content').style.display = 'block';
+                
+                // Trigger fade-in animations
+                setTimeout(function() {
+                    document.querySelectorAll('.fade-in').forEach(element => {
+                        element.classList.add('visible');
+                    });
+                }, 100);
+            }
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(link => {
+                link.addEventListener('click', function(event) {
+                    const targetId = this.getAttribute('href').substring(1);
+                    const target = document.getElementById(targetId);
+                    if (target) {
+                        event.preventDefault();
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+
+            // Fade in animation on scroll
+            window.addEventListener('scroll', function() {
+                document.querySelectorAll('.fade-in').forEach(element => {
+                    const elementTop = element.offsetTop;
+                    const elementBottom = elementTop + element.offsetHeight;
+                    const viewportTop = window.pageYOffset;
+                    const viewportBottom = viewportTop + window.innerHeight;
+                    
+                    if (elementBottom > viewportTop && elementTop < viewportBottom) {
+                        element.classList.add('visible');
+                    }
+                });
+            });
+        });
+
+        // 统一动态背景系统 - 图形渐变元素
+        function initGradientShapes() {
+            const container = document.body;
+            
+            function createGradientShape() {
+                const shape = document.createElement('div');
+                const shapes = ['circle', 'square', 'triangle', 'diamond'];
+                const randomShape = shapes[Math.floor(Math.random() * shapes.length)];
+                const size = 20 + Math.random() * 60;
+                const opacity = 0.05 + Math.random() * 0.1;
+                
+                let shapeStyle = '';
+                switch (randomShape) {
+                    case 'circle':
+                        shapeStyle = `border-radius: 50%; width: ${size}px; height: ${size}px;`;
+                        break;
+                    case 'square':
+                        shapeStyle = `width: ${size}px; height: ${size}px;`;
+                        break;
+                    case 'triangle':
+                        shapeStyle = `width: 0; height: 0; border-left: ${size/2}px solid transparent; border-right: ${size/2}px solid transparent; border-bottom: ${size}px solid rgba(255, 255, 255, ${opacity});`;
+                        break;
+                    case 'diamond':
+                        shapeStyle = `width: ${size}px; height: ${size}px; transform: rotate(45deg);`;
+                        break;
+                }
+                
+                shape.style.cssText = `
+                    position: fixed;
+                    ${shapeStyle}
+                    background: linear-gradient(45deg, rgba(255, 255, 255, ${opacity}), rgba(255, 255, 255, ${opacity * 0.5}));
+                    top: ${Math.random() * 100}%;
+                    left: ${Math.random() * 100}%;
+                    pointer-events: none;
+                    z-index: -50;
+                    animation: shapeFloat ${3 + Math.random() * 5}s linear infinite;
+                `;
+                
+                container.appendChild(shape);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    if (shape.parentNode) {
+                        shape.parentNode.removeChild(shape);
+                    }
+                }, 20000);
+            }
+            
+            // Create initial shapes
+            for (let i = 0; i < 8; i++) {
+                setTimeout(createGradientShape, i * 50);
+            }
+            
+            // Add new shapes periodically
+            setInterval(createGradientShape, 3000);
+        }
+
+        function initGradientWaves() {
+            const container = document.body;
+            
+            function createGradientWave() {
+                const wave = document.createElement('div');
+                const width = 200 + Math.random() * 300;
+                const height = 2 + Math.random() * 4;
+                const opacity = 0.05 + Math.random() * 0.1;
+                
+                wave.style.cssText = `
+                    position: fixed;
+                    width: ${width}px;
+                    height: ${height}px;
+                    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, ${opacity}), transparent);
+                    top: ${Math.random() * 100}%;
+                    left: ${Math.random() * 100}%;
+                    pointer-events: none;
+                    z-index: -50;
+                    animation: waveFlow ${2 + Math.random() * 4}s linear infinite;
+                `;
+                
+                container.appendChild(wave);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    if (wave.parentNode) {
+                        wave.parentNode.removeChild(wave);
+                    }
+                }, 15000);
+            }
+            
+            // Create initial waves
+            for (let i = 0; i < 6; i++) {
+                setTimeout(createGradientWave, i * 100);
+            }
+            
+            // Add new waves periodically
+            setInterval(createGradientWave, 4000);
+        }
+
+        function initGradientParticles() {
+            const container = document.body;
+            
+            function createGradientParticle() {
+                const particle = document.createElement('div');
+                const size = 3 + Math.random() * 8;
+                const opacity = 0.05 + Math.random() * 0.1;
+                
+                particle.style.cssText = `
+                    position: fixed;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: radial-gradient(circle, rgba(255, 255, 255, ${opacity}), transparent);
+                    border-radius: 50%;
+                    top: ${Math.random() * 100}%;
+                    left: ${Math.random() * 100}%;
+                    pointer-events: none;
+                    z-index: -50;
+                    animation: particleFloat ${2 + Math.random() * 3}s linear infinite;
+                `;
+                
+                container.appendChild(particle);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                    }
+                }, 15000);
+            }
+            
+            // Create initial particles
+            for (let i = 0; i < 12; i++) {
+                setTimeout(createGradientParticle, i * 30);
+            }
+            
+            // Add new particles periodically
+            setInterval(createGradientParticle, 2000);
+        }
+
+        function initGradientLines() {
+            const container = document.body;
+            
+            function createGradientLine() {
+                const line = document.createElement('div');
+                const isVertical = Math.random() > 0.5;
+                const length = 50 + Math.random() * 150;
+                const opacity = 0.05 + Math.random() * 0.1;
+                
+                line.style.cssText = `
+                    position: fixed;
+                    ${isVertical ? `width: 1px; height: ${length}px;` : `width: ${length}px; height: 1px;`}
+                    background: linear-gradient(${isVertical ? '180deg' : '90deg'}, transparent, rgba(255, 255, 255, ${opacity}), transparent);
+                    top: ${Math.random() * 100}%;
+                    left: ${Math.random() * 100}%;
+                    pointer-events: none;
+                    z-index: -50;
+                    animation: linePulse ${2 + Math.random() * 3}s ease-in-out infinite;
+                `;
+                
+                container.appendChild(line);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    if (line.parentNode) {
+                        line.parentNode.removeChild(line);
+                    }
+                }, 10000);
+            }
+            
+            // Create initial lines
+            for (let i = 0; i < 10; i++) {
+                setTimeout(createGradientLine, i * 50);
+            }
+            
+            // Add new lines periodically
+            setInterval(createGradientLine, 3000);
+        }
+
+        // 初始化统一动态背景系统
+        function initDynamicBackground() {
+            // 启动所有动态背景元素
+            initGradientShapes();
+            initGradientWaves();
+            initGradientParticles();
+            initGradientLines();
+        }
+
+
+        // Language switching function
+        function updateLanguage(lang) {
+            console.log('=== updateLanguage called with:', lang, '===');
+            
+            // Update all elements with language data attributes
+            const elements = document.querySelectorAll('[data-en], [data-zh], [data-zh-tw]');
+            console.log('Found elements to update:', elements.length);
+            
+            if (elements.length === 0) {
+                console.error('No elements found with language attributes!');
+                return;
+            }
+            
+            let updatedCount = 0;
+            elements.forEach((element, index) => {
+                const oldText = element.textContent;
+                let newText = '';
+                
+                if (lang === 'zh' && element.hasAttribute('data-zh')) {
+                    newText = element.getAttribute('data-zh');
+                } else if (lang === 'zh-tw' && element.hasAttribute('data-zh-tw')) {
+                    newText = element.getAttribute('data-zh-tw');
+                } else if (lang === 'en' && element.hasAttribute('data-en')) {
+                    newText = element.getAttribute('data-en');
+                }
+                
+                if (newText && newText !== oldText) {
+                    element.textContent = newText;
+                    updatedCount++;
+                    console.log(`Element ${index + 1}: "${oldText}" -> "${newText}"`);
+                }
+            });
+            console.log('Updated elements:', updatedCount);
+            
+            // Update language toggle button text
+            const langText = document.getElementById('lang-text');
+            if (langText) {
+                if (lang === 'zh') {
+                    langText.textContent = '简';
+                } else if (lang === 'zh-tw') {
+                    langText.textContent = '繁';
+                } else {
+                    langText.textContent = 'EN';
+                }
+            }
+            
+            // Adjust hero title font size for English
+            const heroTitle = document.querySelector('.hero-title');
+            if (heroTitle) {
+                if (lang === 'en') {
+                    heroTitle.style.fontSize = '4rem';
+                } else {
+                    heroTitle.style.fontSize = '5rem';
+                }
+            }
+        }
 </script>
 </body>
-
 </html>
