@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理面板测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #000;
+            color: #fff;
+            padding: 20px;
+        }
+        .test-area {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .admin-trigger {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 30px;
+            height: 30px;
+            background: rgba(0, 255, 0, 0.3);
+            border: 1px solid rgba(0, 255, 0, 0.6);
+            cursor: pointer;
+            z-index: 1000;
+            border-radius: 50%;
+        }
+        .admin-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .admin-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 管理面板测试页面</h1>
+    
+    <div class="test-area">
+        <h2>激活方法：</h2>
+        <p>1. <strong>点击激活</strong>：在右下角绿色圆圈连续点击5次</p>
+        <p>2. <strong>键盘快捷键</strong>：按 Ctrl + Shift + A</p>
+    </div>
+    
+    <div class="test-area">
+        <h2>测试状态：</h2>
+        <p id="clickCount">点击次数: 0</p>
+        <p id="status">状态: 等待激活</p>
+    </div>
+    
+    <!-- 隐藏的激活区域 -->
+    <div class="admin-trigger" id="adminTrigger" title="连续点击5次进入管理模式"></div>
+    
+    <!-- 管理面板 -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-content">
+            <h2>🎉 管理面板已激活！</h2>
+            <p>恭喜！管理面板功能正常工作。</p>
+            <button onclick="closeAdminPanel()">关闭面板</button>
+            <button onclick="testFunction()">测试功能</button>
+        </div>
+    </div>
+
+    <script>
+        let clickCount = 0;
+        let clickTimeout;
+        
+        // 点击激活
+        document.getElementById('adminTrigger').addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            clickCount++;
+            document.getElementById('clickCount').textContent = `点击次数: ${clickCount}`;
+            
+            if (clickCount >= 5) {
+                showAdminPanel();
+                clickCount = 0;
+            } else {
+                // 3秒后重置计数
+                clearTimeout(clickTimeout);
+                clickTimeout = setTimeout(() => {
+                    clickCount = 0;
+                    document.getElementById('clickCount').textContent = `点击次数: ${clickCount}`;
+                }, 3000);
+            }
+        });
+        
+        // 键盘快捷键
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+                e.preventDefault();
+                showAdminPanel();
+            }
+        });
+        
+        function showAdminPanel() {
+            document.getElementById('adminPanel').style.display = 'block';
+            document.getElementById('status').textContent = '状态: 管理面板已激活';
+        }
+        
+        function closeAdminPanel() {
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('status').textContent = '状态: 管理面板已关闭';
+        }
+        
+        function testFunction() {
+            alert('管理面板功能测试成功！');
+        }
+    </script>
+</body>
+</html>

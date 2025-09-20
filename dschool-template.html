@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>d.school风格模板 - 潘俊权</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #003366;
+            background: linear-gradient(135deg, #f5f5dc 0%, #e6f3ff 50%, #f0f8ff 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* d.school风格背景几何元素 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 51, 102, 0.15) 0%, transparent 50%),
+                linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* 导航栏 */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 51, 102, 0.1);
+            padding: 1rem 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 51, 102, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: #003366 !important;
+            font-size: 1.5rem;
+        }
+
+        .nav-link {
+            color: #003366 !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 1rem !important;
+            border-radius: 6px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #003366 !important;
+            background-color: rgba(0, 51, 102, 0.1);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 5px;
+            left: 50%;
+            background: #003366;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 80%;
+        }
+
+        /* 英雄区域 */
+        .hero-section {
+            padding: 120px 0 80px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: transparent;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #003366;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: #666;
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 2.5rem;
+            line-height: 1.7;
+        }
+
+        .profile-image {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgba(0, 51, 102, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 51, 102, 0.2);
+        }
+
+        /* 按钮样式 */
+        .btn-primary-custom {
+            background: linear-gradient(135deg, #003366 0%, #004d99 100%);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 51, 102, 0.3);
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 51, 102, 0.4);
+            color: white;
+        }
+
+        /* 卡片样式 */
+        .card-dschool {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 25px rgba(0, 51, 102, 0.1);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .card-dschool:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 51, 102, 0.2);
+        }
+
+        /* 不同颜色的卡片主题 */
+        .card-theme-1 {
+            background: linear-gradient(135deg, #f5f5dc 0%, #ffffff 100%);
+            border-left: 4px solid #003366;
+        }
+
+        .card-theme-2 {
+            background: linear-gradient(135deg, #e6f3ff 0%, #ffffff 100%);
+            border-left: 4px solid #0066cc;
+        }
+
+        .card-theme-3 {
+            background: linear-gradient(135deg, #f0f8ff 0%, #ffffff 100%);
+            border-left: 4px solid #0099ff;
+        }
+
+        .card-theme-4 {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffffff 100%);
+            border-left: 4px solid #ff9800;
+        }
+
+        /* 图标样式 */
+        .icon-dschool {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .icon-theme-1 { background: linear-gradient(135deg, #003366, #004d99); }
+        .icon-theme-2 { background: linear-gradient(135deg, #0066cc, #0088ff); }
+        .icon-theme-3 { background: linear-gradient(135deg, #0099ff, #00aaff); }
+        .icon-theme-4 { background: linear-gradient(135deg, #ff9800, #ffb74d); }
+
+        /* 节标题 */
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #003366;
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #003366, #0066cc);
+            border-radius: 2px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .profile-image {
+                width: 250px;
+                height: 250px;
+            }
+        }
+
+        /* 动画效果 */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .fade-in-delay-1 { animation-delay: 0.2s; }
+        .fade-in-delay-2 { animation-delay: 0.4s; }
+        .fade-in-delay-3 { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">潘俊权</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">关于我</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#skills">技能</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">联系</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <section class="hero-section" id="home">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="hero-content">
+                        <h1 class="hero-title fade-in">您好，欢迎！</h1>
+                        <h2 class="hero-subtitle fade-in fade-in-delay-1">AI学习设计师</h2>
+                        <p class="hero-description fade-in fade-in-delay-2">
+                            我是俊权，专注于通过AI技术创造创新的教育体验。我的专业领域包括使用教育大数据来赋能学习设计，以及AI在教育场景中的应用。我帮助将复杂的概念和知识转化为易于理解和互动的学习解决方案。
+                        </p>
+                        <a href="#about" class="btn-primary-custom fade-in fade-in-delay-3">
+                            <i class="fas fa-user me-2"></i>了解更多
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <img src="./images/frontpage/1.jpg" alt="潘俊权" class="profile-image fade-in fade-in-delay-2">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于我区域 -->
+    <section class="py-5" id="about">
+        <div class="container">
+            <h2 class="section-title fade-in">关于我</h2>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card-dschool card-theme-1 fade-in">
+                        <p class="mb-4">
+                            本科阶段我主修对外汉语，系统学习了语言学纲要、二语习得、教育学和教育心理学。毕业后，我凭借奖学金前往美国深造，并在俄亥俄州立大学获得硕士学位，研究方向包括语言学、中文语言学和社会语音学。
+                        </p>
+                        <p class="mb-4">
+                            毕业后，我在北京一家K12英语教育科技公司开启了学习设计师的职业生涯。起初，我主要负责开发交互式电子课件，设计友好的学习界面，并制作多媒体学习资源，以确保知识能够通过多感官的方式高效传递。
+                        </p>
+                        <p>
+                            在香港中文大学工作期间，我将Excel、R和SPSS等技能应用于语言能力的评估与分析。同时，我也开始探索人工智能在教育场景中的应用，例如结合ChatGPT与Cursor开发学习工具。目前您所看到的个人主页，便是我与AI协作完成的成果。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 技能区域 -->
+    <section class="py-5" id="skills">
+        <div class="container">
+            <h2 class="section-title fade-in">核心技能</h2>
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card-dschool card-theme-1 fade-in">
+                        <div class="icon-dschool icon-theme-1 mx-auto">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h5 class="text-center mb-3">数据分析</h5>
+                        <p class="text-center text-muted">使用Python、R和SQL等工具进行教育数据分析，为学习设计提供数据支持。</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card-dschool card-theme-2 fade-in fade-in-delay-1">
+                        <div class="icon-dschool icon-theme-2 mx-auto">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <h5 class="text-center mb-3">语言学习</h5>
+                        <p class="text-center text-muted">二语习得专业背景，专注于语言学习技术应用。</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card-dschool card-theme-3 fade-in fade-in-delay-2">
+                        <div class="icon-dschool icon-theme-3 mx-auto">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h5 class="text-center mb-3">教学设计</h5>
+                        <p class="text-center text-muted">系统化教学设计，创造有效的学习体验。</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card-dschool card-theme-4 fade-in fade-in-delay-3">
+                        <div class="icon-dschool icon-theme-4 mx-auto">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h5 class="text-center mb-3">内容开发</h5>
+                        <p class="text-center text-muted">多媒体内容开发，交互式学习资源制作。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系区域 -->
+    <section class="py-5" id="contact">
+        <div class="container">
+            <h2 class="section-title fade-in">让我们合作</h2>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card-dschool card-theme-2 fade-in">
+                        <div class="text-center">
+                            <h4 class="mb-4">准备开始新的项目？</h4>
+                            <p class="mb-4">
+                                我始终热衷于与志同道合的伙伴合作，创造创新的AI驱动教育解决方案。让我们讨论如何共同努力，实现您的教育目标。
+                            </p>
+                            <a href="ai-education.html" class="btn-primary-custom">
+                                <i class="fas fa-rocket me-2"></i>探索我的AI教育工作
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="py-4" style="background: rgba(0, 51, 102, 0.05);">
+        <div class="container">
+            <div class="text-center">
+                <p class="mb-0 text-muted">&copy; 2024 潘俊权. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 导航栏高亮
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // 动画效果
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

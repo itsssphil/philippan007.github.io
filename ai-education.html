@@ -10,22 +10,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #ffffff;
-            --secondary-color: #cccccc;
-            --accent-color: #ffffff;
-            --text-dark: #ffffff;
-            --text-light: #cccccc;
-            --bg-dark: #000000;
-            --bg-darker: #000000;
-            --bg-light: #000000;
-            --bg-white: #000000;
-            --border-color: rgba(255, 255, 255, 0.2);
-            --code-green: #ffffff;
-            --code-blue: #ffffff;
-            --code-purple: #ffffff;
-            --code-yellow: #ffffff;
-            --shadow-soft: 0 2px 10px rgba(255, 255, 255, 0.1);
-            --shadow-hover: 0 4px 20px rgba(255, 255, 255, 0.2);
+            --primary-color: #003366;
+            --secondary-color: #666;
+            --accent-color: #003366;
+            --text-dark: #003366;
+            --text-light: #666;
+            --bg-dark: #f5f5dc;
+            --bg-darker: #e6f3ff;
+            --bg-light: #f0f8ff;
+            --bg-white: #ffffff;
+            --border-color: rgba(0, 51, 102, 0.2);
+            --code-green: #003366;
+            --code-blue: #003366;
+            --code-purple: #003366;
+            --code-yellow: #003366;
+            --shadow-soft: 0 2px 10px rgba(0, 51, 102, 0.1);
+            --shadow-hover: 0 4px 20px rgba(0, 51, 102, 0.2);
         }
 
         * {
@@ -37,40 +37,50 @@
         body {
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
-            color: var(--text-dark);
-            background: var(--bg-darker);
+            color: #003366;
+            background: #f0f9ff;
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
         }
 
-        /* Dynamic Background */
-        .code-background {
+        /* 粒子动画背景容器 */
+        #particles-js {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -30;
-            overflow: hidden;
+            z-index: -1;
+            pointer-events: none;
         }
-
-        .matrix-rain {
+        
+        /* d.school风格背景几何元素 */
+        body::before {
+            content: '';
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -30;
-            overflow: hidden;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 51, 102, 0.05) 0%, transparent 50%),
+                linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.05) 50%, transparent 70%);
+            z-index: -10;
+            pointer-events: none;
         }
+
+
 
         /* Navigation - Exact copy from index.html */
         .navbar {
-            background: #000000;
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid #000000;
+            border-bottom: 1px solid rgba(0, 51, 102, 0.1);
             padding: 1rem 0;
             z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 51, 102, 0.1);
         }
 
         .navbar-nav {
@@ -88,7 +98,7 @@
         }
 
         .nav-link {
-            color: var(--text-light) !important;
+            color: #003366 !important;
             font-weight: 500;
             transition: all 0.3s ease;
             position: relative;
@@ -99,8 +109,8 @@
 
         .nav-link:hover,
         .nav-link.active {
-            color: var(--primary-color) !important;
-            background-color: rgba(255, 255, 255, 0.1);
+            color: #003366 !important;
+            background-color: rgba(0, 51, 102, 0.1);
             border-radius: 4px;
         }
 
@@ -111,7 +121,7 @@
             height: 2px;
             bottom: 5px;
             left: 50%;
-            background: var(--primary-color);
+            background: #003366;
             transition: all 0.3s ease;
             transform: translateX(-50%);
         }
@@ -133,50 +143,59 @@
 
         .hero-title {
             font-size: 4rem;
-            font-weight: 300;
+            font-weight: 700;
             margin-bottom: 1rem;
             text-align: center;
-            color: var(--text-dark);
+            color: #003366;
         }
 
         .hero-subtitle {
             font-size: 1.5rem;
-            color: var(--text-light);
+            color: #666;
             text-align: center;
             margin-bottom: 2rem;
         }
 
         /* Filter Section */
         .filter-section {
-            padding: 2rem 0;
-            background: rgba(0, 0, 0, 0.8);
+            padding: 1.5rem 0;
+            background: rgba(255, 255, 255, 0.9);
             position: sticky;
             top: 0;
             z-index: 100;
-            border-bottom: 1px solid #000000;
+            border-bottom: 1px solid rgba(0, 51, 102, 0.1);
             margin-top: 0;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 51, 102, 0.1);
+            min-height: 80px;
+            display: flex;
+            align-items: center;
         }
 
         .filter-tabs {
             display: flex;
             justify-content: center;
+            align-items: center;
             gap: 0.5rem;
-            margin-bottom: 2rem;
+            margin: 0 auto;
             flex-wrap: wrap;
+            max-width: 600px;
+            width: 100%;
         }
 
         .filter-tab {
-            padding: 0.75rem 1.5rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: var(--text-dark);
+            padding: 0.6rem 1.2rem;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 51, 102, 0.2);
+            color: #003366;
             text-decoration: none;
-            border-radius: 30px;
+            border-radius: 25px;
             transition: all 0.3s ease;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 500;
             position: relative;
             overflow: hidden;
+            white-space: nowrap;
         }
 
         .filter-tab::before {
@@ -195,19 +214,19 @@
         }
 
         .filter-tab:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: var(--primary-color);
-            color: var(--primary-color);
+            background: rgba(0, 51, 102, 0.1);
+            border-color: #003366;
+            color: #003366;
             transform: translateY(-2px);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 51, 102, 0.2);
         }
 
         .filter-tab.active {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid var(--primary-color);
-            color: var(--primary-color);
+            background: rgba(0, 51, 102, 0.1);
+            border: 2px solid #003366;
+            color: #003366;
             transform: translateY(-2px);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 51, 102, 0.2);
         }
 
         .filter-tab.active::before {
@@ -236,8 +255,8 @@
         }
 
         .project-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(0, 51, 102, 0.2);
             border-radius: 20px;
             padding: 0;
             margin-bottom: 2rem;
@@ -249,6 +268,7 @@
             width: 100%;
             display: flex;
             flex-direction: column;
+            box-shadow: 0 8px 32px rgba(0, 51, 102, 0.1);
         }
 
         .project-card::before {
@@ -270,8 +290,8 @@
 
         .project-card:hover {
             transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 123, 255, 0.15);
-            border-color: rgba(0, 123, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 51, 102, 0.2);
+            border-color: rgba(0, 51, 102, 0.5);
         }
 
         .project-image-container {
@@ -322,13 +342,13 @@
             font-size: 1.5rem;
             font-weight: 700;
             margin-bottom: 1.25rem;
-            color: var(--text-dark);
+            color: #003366;
             line-height: 1.2;
             letter-spacing: -0.02em;
         }
 
         .project-description {
-            color: #888888;
+            color: #555;
             margin-bottom: 1rem;
             line-height: 1.4;
             font-size: 0.9rem;
@@ -352,7 +372,7 @@
         }
 
         .project-btn {
-            background: linear-gradient(45deg, #007bff, #0056b3);
+            background: linear-gradient(135deg, #003366 0%, #004d99 100%);
             border: none;
             color: white;
             padding: 0.6rem 1.5rem;
@@ -366,11 +386,12 @@
             font-size: 0.9rem;
             flex: 1;
             justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 51, 102, 0.3);
         }
 
         .project-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 51, 102, 0.4);
             color: white;
         }
 
@@ -758,13 +779,18 @@
                 padding: 1rem 0;
                 position: sticky;
                 top: 70px;
+                min-height: 120px;
+                display: flex;
+                align-items: center;
             }
             
             .filter-tabs {
                 flex-direction: column;
                 align-items: center;
                 gap: 0.75rem;
-                margin-bottom: 1.5rem;
+                margin: 0 auto;
+                max-width: 300px;
+                width: 100%;
             }
             
             .filter-tab {
@@ -1221,9 +1247,8 @@
     </style>
 </head>
 <body>
-    <!-- Dynamic Background -->
-    <div class="code-background" id="codeBackground"></div>
-    <div class="matrix-rain" id="matrixRain"></div>
+    <!-- 粒子动画背景 -->
+    <div id="particles-js"></div>
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg fixed-top">
@@ -1240,19 +1265,20 @@
                         <a class="nav-link active" href="ai-education.html" data-en="AI EDUCATION" data-zh="AI教育" data-zh-tw="AI教育">AI教育</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <button class="btn btn-outline-light btn-sm ms-2 dropdown-toggle" id="language-toggle" data-bs-toggle="dropdown" style="border: 1px solid var(--primary-color); color: var(--primary-color); background: transparent; padding: 0.5rem 1rem; border-radius: 4px; transition: all 0.3s ease;">
+                        <button class="btn btn-outline-light btn-sm ms-2 dropdown-toggle" id="language-toggle" data-bs-toggle="dropdown" style="border: 1px solid #003366; color: #003366; background: rgba(255, 255, 255, 0.8); padding: 0.5rem 1rem; border-radius: 4px; transition: all 0.3s ease;">
                             <i class="fas fa-globe me-1"></i><span id="lang-text">简</span>
                         </button>
-                        <ul class="dropdown-menu" style="background: var(--bg-light); border: 1px solid var(--border-color);">
-                            <li><a class="dropdown-item" href="#" data-lang="zh" style="color: var(--text-dark);">简体中文</a></li>
-                            <li><a class="dropdown-item" href="#" data-lang="zh-tw" style="color: var(--text-dark);">繁體中文</a></li>
-                            <li><a class="dropdown-item" href="#" data-lang="en" style="color: var(--text-dark);">English</a></li>
+                        <ul class="dropdown-menu" style="background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(0, 51, 102, 0.2); box-shadow: 0 4px 12px rgba(0, 51, 102, 0.2);">
+                            <li><a class="dropdown-item" href="#" data-lang="zh" style="color: #003366;">简体中文</a></li>
+                            <li><a class="dropdown-item" href="#" data-lang="zh-tw" style="color: #003366;">繁體中文</a></li>
+                            <li><a class="dropdown-item" href="#" data-lang="en" style="color: #003366;">English</a></li>
                         </ul>
                     </li>
                 </ul>
             </div>
 </div>
     </nav>
+
 
     <!-- Hero Section -->
     <section class="hero-section">
@@ -1365,6 +1391,7 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
     <script>
         // Language switching
         let currentLang = 'zh';
@@ -1699,7 +1726,121 @@
             }
         }
 
+        // 粒子动画初始化函数
+        function initParticles() {
+            if (typeof tsParticles !== 'undefined') {
+                tsParticles.load("particles-js", {
+                    "particles": {
+                        "number": {
+                            "value": 60,
+                            "density": {
+                                "enable": true,
+                                "value_area": 800
+                            }
+                        },
+                        "color": {
+                            "value": ["#1E3A8A", "#444444", "#40C4FF", "#00FF41"]
+                        },
+                        "shape": {
+                            "type": "circle",
+                            "stroke": {
+                                "width": 0,
+                                "color": "#000000"
+                            }
+                        },
+                        "opacity": {
+                            "value": 0.6,
+                            "random": true,
+                            "anim": {
+                                "enable": true,
+                                "speed": 1,
+                                "opacity_min": 0.3,
+                                "sync": false
+                            }
+                        },
+                        "size": {
+                            "value": 2,
+                            "random": true,
+                            "anim": {
+                                "enable": true,
+                                "speed": 2,
+                                "size_min": 1,
+                                "sync": false
+                            }
+                        },
+                        "line_linked": {
+                            "enable": true,
+                            "distance": 150,
+                            "color": "rgba(30, 58, 138, 0.2)",
+                            "opacity": 0.2,
+                            "width": 1
+                        },
+                        "move": {
+                            "enable": true,
+                            "speed": 0.5,
+                            "direction": "none",
+                            "random": true,
+                            "straight": false,
+                            "out_mode": "out",
+                            "bounce": false,
+                            "attract": {
+                                "enable": false,
+                                "rotateX": 600,
+                                "rotateY": 1200
+                            }
+                        }
+                    },
+                    "interactivity": {
+                        "detect_on": "canvas",
+                        "events": {
+                            "onhover": {
+                                "enable": false,
+                                "mode": "repulse"
+                            },
+                            "onclick": {
+                                "enable": false,
+                                "mode": "push"
+                            },
+                            "resize": true
+                        },
+                        "modes": {
+                            "grab": {
+                                "distance": 400,
+                                "line_linked": {
+                                    "opacity": 1
+                                }
+                            },
+                            "bubble": {
+                                "distance": 400,
+                                "size": 40,
+                                "duration": 2,
+                                "opacity": 8,
+                                "speed": 3
+                            },
+                            "repulse": {
+                                "distance": 200,
+                                "duration": 0.4
+                            },
+                            "push": {
+                                "particles_nb": 4
+                            },
+                            "remove": {
+                                "particles_nb": 2
+                            }
+                        }
+                    },
+                    "retina_detect": true
+                });
+                console.log('Particles animation initialized successfully');
+            } else {
+                console.error('tsParticles library not loaded');
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize particles animation
+            initParticles();
+            
             // 尝试从localStorage加载数据，如果没有则使用默认数据
             const savedData = localStorage.getItem('projectsData');
             console.log('页面加载时，localStorage中的数据:', savedData ? '存在' : '不存在');
@@ -1715,8 +1856,7 @@
                 console.log('localStorage中没有数据，使用默认项目数据，共', projects.length, '个项目');
             }
             
-            // Initialize dynamic background
-            initDynamicBackground();
+            
             
             // Initialize projects
             initProjects();
@@ -1867,192 +2007,7 @@
             }
         }
 
-        // 统一动态背景系统 - 图形渐变元素
-        function initGradientShapes() {
-            const container = document.body;
-            
-            function createGradientShape() {
-                const shape = document.createElement('div');
-                const shapes = ['circle', 'square', 'triangle', 'diamond'];
-                const randomShape = shapes[Math.floor(Math.random() * shapes.length)];
-                const size = 20 + Math.random() * 60;
-                const opacity = 0.05 + Math.random() * 0.1;
-                
-                let shapeStyle = '';
-                switch (randomShape) {
-                    case 'circle':
-                        shapeStyle = `border-radius: 50%; width: ${size}px; height: ${size}px;`;
-                        break;
-                    case 'square':
-                        shapeStyle = `width: ${size}px; height: ${size}px;`;
-                        break;
-                    case 'triangle':
-                        shapeStyle = `width: 0; height: 0; border-left: ${size/2}px solid transparent; border-right: ${size/2}px solid transparent; border-bottom: ${size}px solid rgba(255, 255, 255, ${opacity});`;
-                        break;
-                    case 'diamond':
-                        shapeStyle = `width: ${size}px; height: ${size}px; transform: rotate(45deg);`;
-                        break;
-                }
-                
-                shape.style.cssText = `
-                    position: fixed;
-                    ${shapeStyle}
-                    background: linear-gradient(45deg, rgba(255, 255, 255, ${opacity}), rgba(255, 255, 255, ${opacity * 0.5}));
-                    top: ${Math.random() * 100}%;
-                    left: ${Math.random() * 100}%;
-                    pointer-events: none;
-                    z-index: -50;
-                    animation: shapeFloat ${3 + Math.random() * 5}s linear infinite;
-                `;
-                
-                container.appendChild(shape);
-                
-                // Remove after animation
-                setTimeout(() => {
-                    if (shape.parentNode) {
-                        shape.parentNode.removeChild(shape);
-                    }
-                }, 20000);
-            }
-            
-            // Create initial shapes
-            for (let i = 0; i < 8; i++) {
-                setTimeout(createGradientShape, i * 50);
-            }
-            
-            // Add new shapes periodically
-            setInterval(createGradientShape, 3000);
-        }
 
-        function initGradientWaves() {
-            const container = document.body;
-            
-            function createGradientWave() {
-                const wave = document.createElement('div');
-                const width = 200 + Math.random() * 300;
-                const height = 2 + Math.random() * 4;
-                const opacity = 0.05 + Math.random() * 0.1;
-                
-                wave.style.cssText = `
-                    position: fixed;
-                    width: ${width}px;
-                    height: ${height}px;
-                    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, ${opacity}), transparent);
-                    top: ${Math.random() * 100}%;
-                    left: ${Math.random() * 100}%;
-                    pointer-events: none;
-                    z-index: -50;
-                    animation: waveFlow ${2 + Math.random() * 4}s linear infinite;
-                `;
-                
-                container.appendChild(wave);
-                
-                // Remove after animation
-                setTimeout(() => {
-                    if (wave.parentNode) {
-                        wave.parentNode.removeChild(wave);
-                    }
-                }, 15000);
-            }
-            
-            // Create initial waves
-            for (let i = 0; i < 6; i++) {
-                setTimeout(createGradientWave, i * 100);
-            }
-            
-            // Add new waves periodically
-            setInterval(createGradientWave, 4000);
-        }
-
-        function initGradientParticles() {
-            const container = document.body;
-            
-            function createGradientParticle() {
-                const particle = document.createElement('div');
-                const size = 3 + Math.random() * 8;
-                const opacity = 0.05 + Math.random() * 0.1;
-                
-                particle.style.cssText = `
-                    position: fixed;
-                    width: ${size}px;
-                    height: ${size}px;
-                    background: radial-gradient(circle, rgba(255, 255, 255, ${opacity}), transparent);
-                    border-radius: 50%;
-                    top: ${Math.random() * 100}%;
-                    left: ${Math.random() * 100}%;
-                    pointer-events: none;
-                    z-index: -50;
-                    animation: particleFloat ${2 + Math.random() * 3}s linear infinite;
-                `;
-                
-                container.appendChild(particle);
-                
-                // Remove after animation
-                setTimeout(() => {
-                    if (particle.parentNode) {
-                        particle.parentNode.removeChild(particle);
-                    }
-                }, 15000);
-            }
-            
-            // Create initial particles
-            for (let i = 0; i < 12; i++) {
-                setTimeout(createGradientParticle, i * 30);
-            }
-            
-            // Add new particles periodically
-            setInterval(createGradientParticle, 2000);
-        }
-
-        function initGradientLines() {
-            const container = document.body;
-            
-            function createGradientLine() {
-                const line = document.createElement('div');
-                const isVertical = Math.random() > 0.5;
-                const length = 50 + Math.random() * 150;
-                const opacity = 0.05 + Math.random() * 0.1;
-                
-                line.style.cssText = `
-                    position: fixed;
-                    ${isVertical ? `width: 1px; height: ${length}px;` : `width: ${length}px; height: 1px;`}
-                    background: linear-gradient(${isVertical ? '180deg' : '90deg'}, transparent, rgba(255, 255, 255, ${opacity}), transparent);
-                    top: ${Math.random() * 100}%;
-                    left: ${Math.random() * 100}%;
-                    pointer-events: none;
-                    z-index: -50;
-                    animation: linePulse ${2 + Math.random() * 3}s ease-in-out infinite;
-                `;
-                
-                container.appendChild(line);
-                
-                // Remove after animation
-                setTimeout(() => {
-                    if (line.parentNode) {
-                        line.parentNode.removeChild(line);
-                    }
-                }, 10000);
-            }
-            
-            // Create initial lines
-            for (let i = 0; i < 10; i++) {
-                setTimeout(createGradientLine, i * 50);
-            }
-            
-            // Add new lines periodically
-            setInterval(createGradientLine, 3000);
-        }
-
-        // 初始化统一动态背景系统
-        function initDynamicBackground() {
-            console.log('=== 初始化动态背景系统 ===');
-            // 启动所有动态背景元素
-            initGradientShapes();
-            initGradientWaves();
-            initGradientParticles();
-            initGradientLines();
-            console.log('=== 动态背景系统初始化完成 ===');
-        }
 
 
         // Projects data
